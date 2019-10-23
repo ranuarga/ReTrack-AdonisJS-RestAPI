@@ -16,8 +16,8 @@ class HistorySchema extends Schema {
         .onDelete('CASCADE')
         .nullable()
       table.integer('team_id').nullable()
-      table.float('history_longitude').nullable()
-      table.float('history_latitude').nullable()
+      table.decimal('history_longitude', 11, 8).nullable()
+      table.decimal('history_latitude', 10, 8).nullable()
       table.datetime('history_datetime').nullable()
     })
   }
