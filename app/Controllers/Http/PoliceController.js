@@ -30,10 +30,9 @@ class PoliceController {
                 ]
             )
 
-            // looking for police in database
-            const policeExists = await Police.findBy('police_employee_number', data.police_employee_number)
-            
+            // looking for police in database check same if not rejected
             // if police exists don't save
+            const policeExists = await Police.findBy('police_employee_number', data.police_employee_number)
             if (policeExists) {
                 return response
                     .status(400)
@@ -49,7 +48,7 @@ class PoliceController {
                 .status(err.status)
                 .send(err)
         }
-
+        // you can create like this too
         // const police = new Police()
         // police.police_employee_number = request.input('police_employee_number')
 
@@ -59,8 +58,7 @@ class PoliceController {
 
     async show ({ params, request, response}) {
         try {
-            const policeId = pa
-            rams.id
+            const policeId = params.id
         
             const police = await Police.query()
                 .where({
@@ -111,6 +109,7 @@ class PoliceController {
         )
 
         // look police in db
+        
         const police = await Police.findByOrFail('police_id', policeId)
 
         // update police data

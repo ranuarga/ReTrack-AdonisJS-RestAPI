@@ -20,14 +20,31 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
+// Routing for police
 Route.get('police', 'PoliceController.index')
 Route.get('police/:id', 'PoliceController.show')
 Route.post('police', 'PoliceController.store')
 Route.put('police/:id', 'PoliceController.update')
 Route.delete('police/:id/delete', 'PoliceController.destroy')
 
+// Routing for history
 Route.get('history', 'HistoryController.index')
 Route.get('history/:id', 'HistoryController.show')
 Route.post('history', 'HistoryController.store')
 Route.put('history/:id', 'HistoryController.update')
 Route.delete('history/:id/delete', 'HistoryController.destroy')
+
+
+// Routing for location
+Route.get('location', 'LocationController.index')
+Route.get('location/:id', 'LocationController.show')
+Route.post('location', 'LocationController.store')
+Route.put('location/:id', 'LocationController.update')
+Route.delete('location/:id/delete', 'LocationController.destroy')
+
+// Routing for administrator
+Route.get('administrator', 'AdministratorController.index')
+Route.get('administrator/:id', 'AdministratorController.show')
+Route.post('administrator', 'AdministratorgitController.store')
+Route.put('administrator/:id', 'AdministratorController.update')
+Route.delete('administrator/:id/delete', 'AdministratorController.destroy')

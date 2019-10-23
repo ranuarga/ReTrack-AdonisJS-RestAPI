@@ -30,7 +30,7 @@ class Police extends Model {
         return this.hasMany('App/Models/Token')
     }
 
-    events () {
+    histories () {
         return this.hasMany('App/Models/History')
     }
 }
