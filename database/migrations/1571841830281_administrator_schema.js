@@ -7,7 +7,7 @@ class AdministratorSchema extends Schema {
   up () {
     this.create('administrators', (table) => {
       table.increments('admin_id')
-      table.string('admin_employee_number', 25).nullable()
+      table.string('admin_employee_number', 25).notNullable().unique()
       table.string('admin_name', 50).nullable()
       table.string('admin_password', 20).nullable()
       table.datetime('admin_birthdate').nullable()
