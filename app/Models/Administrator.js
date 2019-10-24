@@ -16,6 +16,10 @@ class Administrator extends Model {
         return null
     }
 
+    static get dates () {
+        return super.dates.concat(['admin_birthdate'])
+    }
+
 }
 
 module.exports = Administrator

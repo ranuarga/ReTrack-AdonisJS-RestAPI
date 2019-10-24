@@ -16,6 +16,10 @@ class History extends Model {
         return null
     }
 
+    static get dates () {
+        return super.dates.concat(['history_datetime'])
+    }
+
     police () {
         return this.belongsTo('App/Models/Police')
     }

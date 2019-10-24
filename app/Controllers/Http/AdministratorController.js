@@ -94,7 +94,7 @@ class AdministratorController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response}) {
+  async show ({ params, response}) {
       try {
         const adminId = params.id
 
@@ -113,14 +113,14 @@ class AdministratorController {
 
           return administrator
       } catch (error) {
-          if(err.name === 'ModelNotFoundException'){
+          if(error.name === 'ModelNotFoundException'){
                 return response
-                    .status(err.status)
+                    .status(error.status)
                     .send({ message: {
                         error: 'Administrator not found'
                     } })
           }
-          return response.status(err.status)
+          return response.status(error.status)
       }
   }
 

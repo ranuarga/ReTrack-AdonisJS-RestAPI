@@ -37,7 +37,6 @@ Route.post('history', 'HistoryController.store')
 Route.put('history/:id', 'HistoryController.update')
 Route.delete('history/:id/delete', 'HistoryController.destroy')
 
-
 // Routing for location
 Route.get('location', 'LocationController.index')
 Route.get('location/:id', 'LocationController.show')
