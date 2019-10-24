@@ -20,6 +20,9 @@ Route.get('/', () => {
   return { greeting: 'Hello world in JSON' }
 })
 
+// Routing for auth
+Route.post('login', 'AuthController.login')
+
 // Routing for police
 Route.get('police', 'PoliceController.index')
 Route.get('police/:id', 'PoliceController.show')
@@ -45,6 +48,6 @@ Route.delete('location/:id/delete', 'LocationController.destroy')
 // Routing for administrator
 Route.get('administrator', 'AdministratorController.index')
 Route.get('administrator/:id', 'AdministratorController.show')
-Route.post('administrator', 'AdministratorgitController.store')
+Route.post('administrator', 'AdministratorController.store')
 Route.put('administrator/:id', 'AdministratorController.update')
 Route.delete('administrator/:id/delete', 'AdministratorController.destroy')
