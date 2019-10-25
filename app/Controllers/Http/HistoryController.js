@@ -59,7 +59,7 @@ class HistoryController {
         user_id, team_id, history_longitude, history_latitude, history_datetime
       } = request.all()
       // or if we want to get user id who is login right now we can use this but we must add auth first
-      // const user_id = auth.user.user_id
+      const user_id = auth.user.user_id
       const newHistory = await History.create(
         {
           user_id, team_id, history_longitude, history_latitude, history_datetime
