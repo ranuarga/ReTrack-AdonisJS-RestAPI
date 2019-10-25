@@ -54,6 +54,10 @@ class User extends Model {
   histories () {
     return this.hasMany('App/Models/History')
   }
+
+  role () {
+    return this.belongsTo('App/Models/Role')
+  }
 }
 
 module.exports = User
