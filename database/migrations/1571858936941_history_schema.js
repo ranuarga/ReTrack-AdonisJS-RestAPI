@@ -8,10 +8,10 @@ class HistorySchema extends Schema {
     this.create('histories', (table) => {
       table.increments('history_id')
       table
-        .integer('police_id')
+        .integer('user_id')
         .unsigned()
-        .references('police_id')
-        .inTable('police')
+        .references('user_id')
+        .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
         .nullable()

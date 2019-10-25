@@ -1,20 +1,19 @@
 'use strict'
-const Police = use('App/Models/Police')
+const User = use('App/Models/User')
 
 class AuthController {
     async login({request, auth, response}) {
 
-        const {police_employee_number, police_password} = request.all();
+        const {user_employee_id, user_password} = request.all();
 
         try {
-            if (await auth.attempt(police_employee_number, police_password)) {
-                let police = await User.findBy('police_employee_number', police_employee_number)
-                let token = await auth.generate(police)
+            if (await auth.attempt(user_employee_id, user_password)) {
+                let user = await User.findBy('user_employee_id', user_employee_id)
+                let token = await auth.generate(user)
 
-                Object.assign(police, token)
-                return response.json(police)
+                Object.assign(user, token)
+                return response.json(user)
             }
-
 
         }
         catch (err) {

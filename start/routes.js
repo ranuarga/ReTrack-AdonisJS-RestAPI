@@ -22,31 +22,34 @@ Route.get('/', () => {
 
 // Routing for auth
 Route.post('login', 'AuthController.login')
+Route.post('register', 'UserController.store')
 
-// Routing for police
-Route.get('police', 'PoliceController.index')
-Route.get('police/:id', 'PoliceController.show')
-Route.post('police', 'PoliceController.store')
-Route.put('police/:id', 'PoliceController.update')
-Route.delete('police/:id/delete', 'PoliceController.destroy')
+Route
+  .group(() => {
+    // Routing for role
+    Route.get('role', 'RoleController.index')
+    Route.get('role/:id', 'RoleController.show')
+    Route.post('role', 'RoleController.store')
+    Route.put('role/:id', 'RoleController.update')
+    Route.delete('role/:id/delete', 'RoleController.destroy')
 
-// Routing for history
-Route.get('history', 'HistoryController.index')
-Route.get('history/:id', 'HistoryController.show')
-Route.post('history', 'HistoryController.store')
-Route.put('history/:id', 'HistoryController.update')
-Route.delete('history/:id/delete', 'HistoryController.destroy')
+    // Routing for user
+    Route.get('user', 'UserController.index')
+    Route.post('user', 'UserController.store')
+    Route.put('user/:id', 'UserController.update')
 
-// Routing for location
-Route.get('location', 'LocationController.index')
-Route.get('location/:id', 'LocationController.show')
-Route.post('location', 'LocationController.store')
-Route.put('location/:id', 'LocationController.update')
-Route.delete('location/:id/delete', 'LocationController.destroy')
+    // Routing for history
+    Route.get('history', 'HistoryController.index')
+    Route.get('history/:id', 'HistoryController.show')
+    Route.post('history', 'HistoryController.store')
+    Route.put('history/:id', 'HistoryController.update')
+    Route.delete('history/:id/delete', 'HistoryController.destroy')
 
-// Routing for administrator
-Route.get('administrator', 'AdministratorController.index')
-Route.get('administrator/:id', 'AdministratorController.show')
-Route.post('administrator', 'AdministratorController.store')
-Route.put('administrator/:id', 'AdministratorController.update')
-Route.delete('administrator/:id/delete', 'AdministratorController.destroy')
+    // Routing for location
+    Route.get('location', 'LocationController.index')
+    Route.get('location/:id', 'LocationController.show')
+    Route.post('location', 'LocationController.store')
+    Route.put('location/:id', 'LocationController.update')
+    Route.delete('location/:id/delete', 'LocationController.destroy')
+  })
+  .middleware(['auth'])

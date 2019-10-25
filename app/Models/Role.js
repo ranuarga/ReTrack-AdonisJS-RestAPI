@@ -3,23 +3,22 @@
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Model = use('Model')
 
-class Administrator extends Model {
+class Role extends Model {
     static get primaryKey () {
-        return 'admin_id'
+        return 'role_id'
     }
-
+    
     static get createdAtColumn () {
         return null
     }
-
+    
     static get updatedAtColumn () {
         return null
     }
 
-    static get dates () {
-        return super.dates.concat(['admin_birthdate'])
+    users () {
+        return this.hasMany('App/Models/User')
     }
-
 }
 
-module.exports = Administrator
+module.exports = Role

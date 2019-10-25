@@ -20,8 +20,8 @@ class History extends Model {
         return super.dates.concat(['history_datetime'])
     }
 
-    police () {
-        return this.belongsTo('App/Models/Police')
+    user () {
+        return this.belongsTo('App/Models/User')
     }
 }
 

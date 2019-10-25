@@ -15,10 +15,26 @@ class User extends Model {
      * it to the database.
      */
     this.addHook('beforeSave', async (userInstance) => {
-      if (userInstance.dirty.password) {
-        userInstance.password = await Hash.make(userInstance.password)
+      if (userInstance.dirty.user_password) {
+        userInstance.user_password = await Hash.make(userInstance.user_password)
       }
     })
+  }
+
+  static get primaryKey () {
+    return 'user_id'
+  }
+
+  static get createdAtColumn () {
+    return null
+  }
+
+  static get updatedAtColumn () {
+      return null
+  }
+
+  static get dates () {
+      return super.dates.concat(['user_birthdate'])
   }
 
   /**
@@ -33,6 +49,10 @@ class User extends Model {
    */
   tokens () {
     return this.hasMany('App/Models/Token')
+  }
+
+  histories () {
+    return this.hasMany('App/Models/History')
   }
 }
 

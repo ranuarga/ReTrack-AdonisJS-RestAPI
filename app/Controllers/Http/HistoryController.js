@@ -22,6 +22,7 @@ class HistoryController {
     // return History.all()
     try {
       const history = await History.query()
+        .with('user')
         .fetch()
       
       return history
@@ -50,14 +51,18 @@ class HistoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  
+  async store ({ request, response //, auth
+  }) {
     try {
       const {
-        police_id, team_id, history_longitude, history_latitude, history_datetime
+        user_id, team_id, history_longitude, history_latitude, history_datetime
       } = request.all()
+      // or if we want to get user id who is login right now we can use this but we must add auth first
+      // const user_id = auth.user.user_id
       const newHistory = await History.create(
         {
-          police_id, team_id, history_longitude, history_latitude, history_datetime
+          user_id, team_id, history_longitude, history_latitude, history_datetime
         }
       )
 
@@ -82,14 +87,15 @@ class HistoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response}) {
+  async show ({ params, response}) {
     try {
       const historyId = params.id
 
       const history = await History.query()
       .where({
         history_id: historyId
-      }).fetch()
+      }).with('user')
+      .fetch()
 
       if (history.rows.length === 0) {
         return response
@@ -132,15 +138,15 @@ class HistoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
+  async update ({ params, request }) {
     const historyId = params.id
     const {
-      police_id, team_id, history_longitude, history_latitude, history_datetime
+      user_id, team_id, history_longitude, history_latitude, history_datetime
     } = request.all()
 
     const history = await History.findByOrFail('history_id', historyId)
 
-    history.police_id = police_id
+    history.user_id = user_id
     history.team_id = team_id
     history.history_longitude = history_longitude
     history.history_latitude = history_latitude
@@ -157,7 +163,7 @@ class HistoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
+  async destroy ({ params }) {
     try {
       const historyId = params.id; //history_id to be deleted
 
