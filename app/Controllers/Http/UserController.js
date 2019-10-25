@@ -121,7 +121,10 @@ class UserController {
             
         }
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a1285ec3ceb48fd042400dbc19aab85eb162fea
 }
 
 module.exports = UserController
