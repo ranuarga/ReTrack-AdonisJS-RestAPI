@@ -78,6 +78,49 @@ class UserController {
 
         await user.save()
     }
+
+    async show({ params, response}) {
+        try {
+            const userId = params.id
+
+            const user = await User.query()
+                .where({
+                    user_id: userId
+                }).fetch()
+
+                if( user.rows.length === 0) {
+                    return response
+                    .status(404)
+                    .send({
+                        message: {
+                            error: "No user found"
+                        }
+                    })
+                }
+        }catch( err){
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No role found'
+                } })
+            }
+            return response.status(err.status)
+        }
+    }    
+
+    async destroy ({ params }) {
+        try {
+            const userId = params.id
+
+            const user = await User.query()
+                .where({
+                    user_id: userId
+                }).delete()
+        } catch (err) {
+            
+        }
+    }
 }
 
 module.exports = UserController
