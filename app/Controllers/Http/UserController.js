@@ -7,6 +7,7 @@ class UserController {
 
         try {
             const user = await User.query()
+                .with('role')
                 .fetch()
 
             return user
@@ -86,17 +87,20 @@ class UserController {
             const user = await User.query()
                 .where({
                     user_id: userId
-                }).fetch()
+                }).with('role')
+                .fetch()
 
-                if( user.rows.length === 0) {
-                    return response
+            if( user.rows.length === 0) {
+                return response
                     .status(404)
                     .send({
                         message: {
                             error: "No user found"
                         }
                     })
-                }
+            }
+
+            return user
         }catch( err){
             if (err.name === 'ModelNotFoundException') {
                 return response
