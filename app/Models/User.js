@@ -58,6 +58,10 @@ class User extends Model {
   role () {
     return this.belongsTo('App/Models/Role')
   }
+
+  patrol_reports () {
+    return this.hasMany('App/Models/PatrolReport')
+  }
 }
 
 module.exports = User
