@@ -86,7 +86,7 @@ class LocationController {
           const location = await Location.query()
             .where({
               location_id: locationId
-            }).fetch()
+            }).first()
 
           if (location.rows.length === 0){
               return response

@@ -96,7 +96,7 @@ class HistoryController {
       .where({
         history_id: historyId
       }).with('user')
-      .fetch()
+      .first()
 
       if (history.rows.length === 0) {
         return response

@@ -9,11 +9,11 @@ class UserController {
             const user = await User.query()
                 .with('role')
                 .fetch()
-
             return user
         } catch (err) {
             return response.status(err.status)
         }
+
     }
     
     async store ({ request, response }) {
@@ -88,7 +88,7 @@ class UserController {
                 .where({
                     user_id: userId
                 }).with('role')
-                .fetch()
+                .first()
 
             if( user.rows.length === 0) {
                 return response
@@ -106,7 +106,7 @@ class UserController {
                 return response
                 .status(err.status)
                 .send({ message: {
-                    error: 'No role found'
+                    error: 'No user found'
                 } })
             }
             return response.status(err.status)
@@ -125,10 +125,6 @@ class UserController {
             
         }
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 0a1285ec3ceb48fd042400dbc19aab85eb162fea
 }
 
 module.exports = UserController

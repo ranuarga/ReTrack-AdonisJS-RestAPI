@@ -30,7 +30,7 @@ class RoleController {
             const role = await Role.query()
                 .where({
                     role_id: roleId
-                }).fetch()
+                }).first()
     
             if (role.rows.length === 0) {
                 return response

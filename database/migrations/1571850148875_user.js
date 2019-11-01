@@ -17,7 +17,7 @@ class UserSchema extends Schema {
         .references('role_id')
         .inTable('roles')
         .onUpdate('CASCADE')
-        .onDelete('CASCADE')
+        .onDelete('SET NULL')
         .nullable()
       table.integer('user_status').nullable()
     })

@@ -20,10 +20,6 @@ class Agenda extends Model {
         return super.dates.concat(['agenda_date'])
     }
 
-    team () {
-        return this.belongsTo('App/Models/Team')
-    }
-
     checkpoints () {
         return this.hasMany('App/Models/Checkpoint')
     }
