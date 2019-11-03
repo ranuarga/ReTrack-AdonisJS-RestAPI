@@ -6,14 +6,14 @@ const Schema = use('Schema')
 class TeamSchema extends Schema {
   up () {
     this.create('teams', (table) => {
-      table.increments('teams_id')
+      table.increments('team_id')
       table
         .integer('car_id')
         .unsigned()
         .references('car_id')
         .inTable('cars')
         .onUpdate('CASCADE')
-        .onDelete('CASCADE')
+        .onDelete('SET NULL')
         .nullable()
       table
         .integer('agenda_id')

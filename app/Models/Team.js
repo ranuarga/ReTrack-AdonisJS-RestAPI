@@ -9,16 +9,32 @@ class Team extends Model {
     }
 
     static get createdAtColumn(){
-        return null;
+        return null
     }
 
     static get updatedAtColumn(){
-        return null;
+        return null
     }
 
-    users() {
+    users () {
         return this.belongsToMany('App/Models/User')
-                 .pivotTable('members')
+            .pivotTable('members')
+    }
+
+    members () {
+        return this.hasMany('App/Models/Member')
+    }
+
+    agenda () {
+        return this.belongsTo('App/Models/Agenda')
+    }
+
+    car () {
+        return this.belongsTo('App/Models/Car')
+    }
+
+    histories () {
+        return this.hasMany('App/Models/History')
     }
 }
 

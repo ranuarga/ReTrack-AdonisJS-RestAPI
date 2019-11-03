@@ -18,13 +18,13 @@ class HistoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ response }) {
+  async index({ response }) {
     // return History.all()
     try {
       const history = await History.query()
         .with('user')
         .fetch()
-      
+
       return history
     } catch (err) {
       return response.status(err.status)
@@ -40,7 +40,7 @@ class HistoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async create ({ request, response, view }) {
+  async create({ request, response, view }) {
   }
 
   /**
@@ -51,8 +51,8 @@ class HistoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  
-  async store ({ request, response , auth }) {
+
+  async store({ request, response, auth }) {
     try {
       const {
         // use this when user id isnt retrieved from auth but from request
@@ -88,22 +88,24 @@ class HistoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, response}) {
+  async show({ params, response }) {
     try {
       const historyId = params.id
 
       const history = await History.query()
-      .where({
-        history_id: historyId
-      }).with('user')
-      .first()
+        .where({
+          history_id: historyId
+        }).with('user')
+        .fetch()
 
       if (history.rows.length === 0) {
         return response
           .status(404)
-          .send({ message: {
-            error: 'No history found'
-          } })
+          .send({
+            message: {
+              error: 'No history found'
+            }
+          })
       }
 
       return history
@@ -111,9 +113,11 @@ class HistoryController {
       if (err.name === 'ModelNotFoundException') {
         return response
           .status(err.status)
-          .send({ message: {
-            error: 'No history found'
-          } })
+          .send({
+            message: {
+              error: 'No history found'
+            }
+          })
       }
       return response.status(err.status)
     }
@@ -128,7 +132,7 @@ class HistoryController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
+  async edit({ params, request, response, view }) {
   }
 
   /**
@@ -139,7 +143,7 @@ class HistoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request }) {
+  async update({ params, request }) {
     const historyId = params.id
     const {
       user_id, team_id, history_longitude, history_latitude, history_datetime
@@ -164,17 +168,17 @@ class HistoryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params }) {
+  async destroy({ params }) {
     try {
-      const historyId = params.id; //history_id to be deleted
+      const historyId = params.id //history_id to be deleted
 
       // looking for history
       const history = await History.query()
-      .where({
-        history_id: historyId
-      }).delete()
+        .where({
+          history_id: historyId
+        }).delete()
     } catch (err) {
-      
+
     }
   }
 }

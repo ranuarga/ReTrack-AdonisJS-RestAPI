@@ -4,19 +4,22 @@
 const Model = use('Model')
 
 class Car extends Model {
-   
+
     static get primaryKey () {
         return 'car_id'
     }
 
     static get createdAtColumn () {
-        return null;
+        return null
     }
 
     static get updatedAtColumn () {
-        return null;
+        return null
     }
 
+    teams () {
+        return this.hasMany('App/Models/Team')
+    }
 }
 
 module.exports = Car

@@ -59,6 +59,10 @@ class User extends Model {
     return this.belongsTo('App/Models/Role')
   }
 
+  members () {
+    return this.hasMany('App/Models/Member')
+  }
+
   teams () {
     return this.belongsToMany('App/Models/Team')
               .pivotTable('members')

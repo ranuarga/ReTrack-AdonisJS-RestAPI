@@ -15,7 +15,7 @@ class RoleController {
         }
     }
 
-    async store ({ request, response }) {
+    async store ({ request }) {
         const role = new Role()
         role.role_name = request.input('role_name')
         
@@ -30,7 +30,7 @@ class RoleController {
             const role = await Role.query()
                 .where({
                     role_id: roleId
-                }).first()
+                }).fetch()
     
             if (role.rows.length === 0) {
                 return response

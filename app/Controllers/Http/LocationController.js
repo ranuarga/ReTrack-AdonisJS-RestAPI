@@ -17,14 +17,14 @@ class LocationController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ response }) {
+  async index({ response }) {
     // return Location.all()
     try {
       const location = await Location.query()
-           .fetch()
+        .fetch()
 
       return location
-    } catch (err){
+    } catch (err) {
       return response.status(err.status)
     }
   }
@@ -38,7 +38,7 @@ class LocationController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async create ({ request, response, view }) {
+  async create({ request, response, view }) {
   }
 
   /**
@@ -49,7 +49,7 @@ class LocationController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store({ request, response }) {
     try {
       // getting data passed within the request
       // request only is to return object only with the specified keys      
@@ -62,7 +62,7 @@ class LocationController {
       )
       const location = await Location.create(data)
 
-      return location 
+      return location
     } catch (err) {
       return response
         .status(err.status)
@@ -79,34 +79,38 @@ class LocationController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
-      try {
-          const locationId = params.id
+  async show({ params, response }) {
+    try {
+      const locationId = params.id
 
-          const location = await Location.query()
-            .where({
-              location_id: locationId
-            }).first()
+      const location = await Location.query()
+        .where({
+          location_id: locationId
+        }).fetch()
 
-          if (location.rows.length === 0){
-              return response
-                  .status(404)
-                  .send({ message: {
-                      error: "No location found"
-                } })
-          }
-
-          return location
-      } catch (err) {
-            if (err.name === 'ModelNotFoundException'){
-                  return response
-                      .status(err.status)
-                      .send({ message: {
-                          error: 'No location found'
-                        } })
+      if (location.rows.length === 0) {
+        return response
+          .status(404)
+          .send({
+            message: {
+              error: "No location found"
             }
-            return response.status(err.status)
+          })
       }
+
+      return location
+    } catch (err) {
+      if (err.name === 'ModelNotFoundException') {
+        return response
+          .status(err.status)
+          .send({
+            message: {
+              error: 'No location found'
+            }
+          })
+      }
+      return response.status(err.status)
+    }
   }
 
   /**
@@ -118,7 +122,7 @@ class LocationController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async edit ({ params, request, response, view }) {
+  async edit({ params, request, response, view }) {
   }
 
   /**
@@ -129,31 +133,31 @@ class LocationController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {
-      const locationId = params.id
-      const {
-          location_name,
-          location_longitude,
-          location_latitude
-      } = request.only(
-          [
-            'location_name',
-            'location_longitude',
-            'location_latitude'
-          ]
-        )
+  async update({ params, request, response }) {
+    const locationId = params.id
+    const {
+      location_name,
+      location_longitude,
+      location_latitude
+    } = request.only(
+      [
+        'location_name',
+        'location_longitude',
+        'location_latitude'
+      ]
+    )
 
-        // look location in db
+    // look location in db
 
-        const location = await Location.findByOrFail('location_id', locationId)
+    const location = await Location.findByOrFail('location_id', locationId)
 
-        // update location data
-        location.location_name = location_name
-        location.location_longitude = location_longitude
-        location.location_latitude = location_latitude
+    // update location data
+    location.location_name = location_name
+    location.location_longitude = location_longitude
+    location.location_latitude = location_latitude
 
-        // save data
-        await location.save()
+    // save data
+    await location.save()
   }
 
   /**
@@ -164,17 +168,17 @@ class LocationController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {
-      try {
-          const locationId = params.id
+  async destroy({ params, request, response }) {
+    try {
+      const locationId = params.id
 
-          const location = await Location.query()
-              .where({
-                  location_id: locationId
-              }).delete()
-      } catch (err) {
+      const location = await Location.query()
+        .where({
+          location_id: locationId
+        }).delete()
+    } catch (err) {
 
-      }
+    }
   }
 }
 

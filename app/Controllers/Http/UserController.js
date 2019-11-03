@@ -88,7 +88,7 @@ class UserController {
                 .where({
                     user_id: userId
                 }).with('role')
-                .first()
+                .fetch()
 
             if( user.rows.length === 0) {
                 return response

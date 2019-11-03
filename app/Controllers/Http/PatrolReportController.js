@@ -3,20 +3,21 @@
 const PatrolReport = use('App/Models/PatrolReport')
 
 class PatrolReportController {
-    async index ({ response }) {
+    async index({ response }) {
         // return History.all()
         try {
             const patrol_report = await PatrolReport.query()
                 .with('user')
+                .with('agenda')
                 .fetch()
-        
+
             return patrol_report
         } catch (err) {
             return response.status(err.status)
         }
     }
 
-    async store ({ request, response}) {
+    async store({ request, response }) {
         try {
             const data = request.only(
                 [
@@ -31,7 +32,7 @@ class PatrolReportController {
                     'patrol_status'
                 ]
             )
-            
+
             // const agendaExists = await PatrolReport.findBy('agenda_id', data.agenda_id)
             // const userExists = await PatrolReport.findBy('user_id', data.user_id)
 
@@ -45,21 +46,20 @@ class PatrolReportController {
             //         })
             // }
 
-
             const patrol_report = await PatrolReport.create(data)
 
             return patrol_report
-         } catch (err) {
+        } catch (err) {
             return response
                 .status(err.status)
-                .send(err)   
+                .send(err)
         }
     }
 
-    async update({ request, response, params}) {
+    async update({ request, params }) {
         const patrol_reportId = params.id
-       
-        const { 
+
+        const {
             agenda_id,
             user_id,
             patrol_longitude,
@@ -70,9 +70,9 @@ class PatrolReportController {
             patrol_photo,
             patrol_status
         } = request.all()
-    
-        const patrol_report = await PatrolReport.findByOrFail('patrol_report_id', patrol_reportId )
-    
+
+        const patrol_report = await PatrolReport.findByOrFail('patrol_report_id', patrol_reportId)
+
         patrol_report.agenda_id = agenda_id
         patrol_report.user_id = user_id
         patrol_report.patrol_longitude = patrol_longitude
@@ -86,18 +86,19 @@ class PatrolReportController {
         await patrol_report.save()
     }
 
-    async show({ params, response}) {
+    async show({ params, response }) {
         try {
             const patrol_reportId = params.id
 
             const patrol_report = await PatrolReport.query()
                 .where({
                     patrol_report_id: patrol_reportId
-                }).with('agenda_id')
-                  .with('user_id')
-                  .first()
-            
-            if ( patrol_report.rows.length === 0) {
+                })
+                .with('user')
+                .with('agenda')
+                .fetch()
+
+            if (patrol_report.rows.length === 0) {
                 return response
                     .status(404)
                     .send({
@@ -111,16 +112,18 @@ class PatrolReportController {
         } catch (err) {
             if (err.name === 'ModelNotFoundException') {
                 return response
-                .status(err.status)
-                .send({ message: {
-                    error: 'No patrol report found'
-                } })
+                    .status(err.status)
+                    .send({
+                        message: {
+                            error: 'No patrol report found'
+                        }
+                    })
             }
             return response.status(err.status)
         }
     }
 
-    async destroy ({ params }) {
+    async destroy({ params }) {
         try {
             const patrol_reportId = params.id
 
@@ -129,7 +132,7 @@ class PatrolReportController {
                     patrol_report_id: patrol_reportId
                 }).delete()
         } catch (err) {
-            
+
         }
     }
 }

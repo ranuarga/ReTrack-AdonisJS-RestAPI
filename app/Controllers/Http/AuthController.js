@@ -4,10 +4,10 @@ const User = use('App/Models/User')
 class AuthController {
     async login({request, auth, response}) {
 
-        const {user_employee_id, user_password} = request.all();
+        const {user_employee_id, user_password} = request.all()
 
         try {
-            if (await auth.remeber(true).attempt(user_employee_id, user_password)) {
+            if (await auth.attempt(user_employee_id, user_password)) {
                 let user = await User.findBy('user_employee_id', user_employee_id)
                 let token = await auth.generate(user)
 

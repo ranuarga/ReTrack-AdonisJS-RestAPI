@@ -7,14 +7,14 @@ class AgendaSchema extends Schema {
   up () {
     this.create('agendas', (table) => {
       table.increments('agenda_id')
-      table.date('agenda_date').nullable();
-      table.boolean('agenda_status').nullable();
+      table.date('agenda_date').nullable()
+      table.boolean('agenda_status').nullable()
       // table.timestamps()
     })
   }
 
   down () {
-    this.drop('agenda')
+    this.drop('agendas')
   }
 }
 

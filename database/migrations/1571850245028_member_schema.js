@@ -11,11 +11,11 @@ class MemberSchema extends Schema {
       table.foreign('team_id')
           .references('teams.team_id')
           .onUpdate('cascade')
-          .onDelete('SET NULL')
-     table.foreign('user_id')
+          .onDelete('cascade')
+      table.foreign('user_id')
         .references('users.user_id')
         .onUpdate('cascade')
-        .onDelete('SET NULL')
+        .onDelete('cascade')
     })
   }
 

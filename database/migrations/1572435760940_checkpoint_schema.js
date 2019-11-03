@@ -13,11 +13,11 @@ class CheckpointSchema extends Schema {
         .references('agenda_id')
         .inTable('agendas')
         .onUpdate('CASCADE')
-        .onDelete('SET NULL')
+        .onDelete('CASCADE')
         .nullable()
       table.decimal('checkpoint_longitude', 11, 8).nullable()
       table.decimal('checkpoint_latitude', 10, 8).nullable()
-      table.time('checkpoint_time').nullable()
+      table.datetime('checkpoint_datetime').nullable()
       // table.timestamps()
     })
   }

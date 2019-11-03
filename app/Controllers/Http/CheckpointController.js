@@ -1,9 +1,9 @@
 'use strict'
 const Checkpoint = use('App/Models/Checkpoint')
 
-class Checkpoint {
+class CheckpointController {
     async index ({ response }) {
-        // return checkpoint.all()
+        // return Checkpoint.all()
         try {
             const checkpoint = await Checkpoint.query()
                 .with('agenda')
@@ -22,7 +22,7 @@ class Checkpoint {
                     'agenda_id',
                     'checkpoint_longitude',
                     'checkpoint_latitude',
-                    'checkpoint_time'
+                    'checkpoint_datetime'
                 ]
             )
 
@@ -36,22 +36,22 @@ class Checkpoint {
         }
     }
 
-    async update({ request, response, params}) {
+    async update({ request, params}) {
         const checkpointId = params.id
 
         const {
             agenda_id,
             checkpoint_longitude,
             checkpoint_latitude,
-            checkpoint_time
+            checkpoint_datetime
         } = request.all()
 
         const checkpoint = await Checkpoint.findByOrFail('checkpoint_id', checkpointId)
 
         checkpoint.agenda_id = agenda_id
-        Checkpoint.checkpoint_longitude = checkpoint_longitude
+        checkpoint.checkpoint_longitude = checkpoint_longitude
         checkpoint.checkpoint_latitude = checkpoint_latitude
-        checkpoint_time = checkpoint_time
+        checkpoint.checkpoint_datetime = checkpoint_datetime
 
         await checkpoint.save()
     }
@@ -63,10 +63,11 @@ class Checkpoint {
             const checkpoint = await Checkpoint.query()
                 .where({
                     checkpoint_id: checkpointId
-                }).with('agenda_id')
-                  .first()
+                })
+                .with('agenda')
+                .fetch()
 
-            if (checkpoint.rows,length === 0) {
+            if (checkpoint.rows.length === 0) {
                 return response
                     .status(404)
                     .send({
@@ -74,7 +75,6 @@ class Checkpoint {
                             error: "No checkpoint found"
                         }
                     })
-
             }
 
             return checkpoint
@@ -103,3 +103,5 @@ class Checkpoint {
         }
     }
 }
+
+module.exports = CheckpointController

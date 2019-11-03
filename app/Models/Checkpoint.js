@@ -16,6 +16,10 @@ class Checkpoint extends Model {
         return null
     }
 
+    static get dates () {
+        return super.dates.concat(['checkpoint_datetime'])
+    }
+
     agenda () {
         return this.belongsTo('App/Models/Agenda')
     }
