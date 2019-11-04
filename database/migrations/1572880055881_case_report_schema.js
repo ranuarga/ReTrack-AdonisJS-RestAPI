@@ -19,7 +19,7 @@ class CaseReportSchema extends Schema {
         .integer('case_id')
         .unsigned()
         .references('case_id')
-        .inTable('cases')
+        .inTable('case_entries')
         .onUpdate('CASCADE')
         .onDelete('SET NULL')
         .nullable()

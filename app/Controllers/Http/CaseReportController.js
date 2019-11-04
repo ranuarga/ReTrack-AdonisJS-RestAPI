@@ -59,13 +59,13 @@ class CaseEntryController {
         [
           'user_id',
           'case_id',
-          'case_reporter',
-          'case_date',
-          'case_time',
-          'case_longitude',
-          'case_latitude',
-          'case_description',
-          'case_photo'
+          'case_report_date',
+          'case_report_time',
+          'case_report_longitude',
+          'case_report_latitude',
+          'case_report_description',
+          'case_report_photo',
+          'case_report_status',
         ]
       )
       const case_report = await CaseReport.create(data)
@@ -148,28 +148,28 @@ class CaseEntryController {
     const case_reportId = params.id
 
         const {
-          user_id,
-          case_id,
-          case_reporter,
-          case_date,
-          case_time,
-          case_longitude,
-          case_latitude,
-          case_description,
-          case_photo
+          user_report_id,
+          case_report_id,
+          case_report_reporter,
+          case_report_date,
+          case_report_time,
+          case_report_longitude,
+          case_report_latitude,
+          case_report_description,
+          case_report_photo
         } = request.all()
 
-        const case_report = await CaseReport.findByOrFail('case_id', caseId)
+        const case_report = await CaseReport.findByOrFail('case_report_id', case_reportId)
 
-        case_report.user_id = user_id
-        case_report.case_id = case_id
-        case_report.case_reporter = case_reporter
-        case_report.case_date = case_date
-        case_report.case_time = case_time
-        case_report.case_longitude = case_longitude
-        case_report.case_latitude = case_latitude
-        case_report.case_description = case_description
-        case_report.case_photo = case_photo
+        case_report.user_id = user_report_id
+        case_report.case_id = case_report_id
+        case_report.case_reporter = case_report_reporter
+        case_report.case_date = case_report_date
+        case_report.case_time = case_report_time
+        case_report.case_longitude = case_report_longitude
+        case_report.case_latitude = case_report_latitude
+        case_report.case_description = case_report_description
+        case_report.case_photo = case_report_photo
 
         await case_report.save()
   }
@@ -184,11 +184,11 @@ class CaseEntryController {
    */
   async destroy ({ params }) {
     try {
-      const caseId = params.id
+      const case_reportId = params.id
 
       const case_report = await CaseEntry.query()
           .where({
-              case_id: caseId
+              case_report_id: case_reportId
           }).delete()
     } catch (err) {
 

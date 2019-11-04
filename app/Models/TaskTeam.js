@@ -21,7 +21,7 @@ class TaskTeam extends Model {
     }
 
     case () {
-        return this.belongsTo('App/Models/Case');
+        return this.belongsTo('App/Models/CaseEntry');
     }
 
     team () {

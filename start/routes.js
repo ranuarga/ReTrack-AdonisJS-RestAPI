@@ -151,13 +151,6 @@ Route
     Route.post('user', 'UserController.store')
     Route.put('user/:id', 'UserController.update')
     Route.delete('user/:id/delete', 'UserController.destroy')
-  
-    // Routing for cordinator
-    Route.get('cordinator', 'CordinatorController.index')
-    Route.get('cordinator/:id', 'CordinatorController.show')
-    Route.post('cordinator', 'CordinatorController.store')
-    Route.put('cordinator/:id', 'CordinatorController.update')
-    Route.delete('cordinator/:id/delete', 'CordinatorController.destroy')
-    
+   
   })
   .middleware(['auth'])

@@ -3,7 +3,7 @@
 const Database = use('Database')
 const Member = use('App/Models/TaskTeam')
 
-class MemberController {
+class TaskTeamController {
     async index({ response }) {
         // return History.all()
         try {
@@ -158,4 +158,4 @@ class MemberController {
     }
 }
 
-module.exports = MemberController
+module.exports = TaskTeamController
