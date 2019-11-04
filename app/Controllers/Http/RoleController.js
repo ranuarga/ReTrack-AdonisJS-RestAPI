@@ -62,6 +62,8 @@ class RoleController {
         role.role_name = role_name
 
         await role.save()
+
+        return role
     }
 
     async destroy ({ params }) {

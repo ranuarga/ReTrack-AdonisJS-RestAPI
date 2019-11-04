@@ -41,6 +41,13 @@ Route
     Route.put('car/:id', 'CarController.update')
     Route.delete('car/:id/delete', 'CarController.destroy')
 
+    // Routing for category
+    Route.get('category', 'CategoryController.index')
+    Route.get('category/:id', 'CategoryController.show')
+    Route.post('category', 'CategoryController.store')
+    Route.put('category/:id', 'CategoryController.update')
+    Route.delete('category/:id/delete', 'CategoryController.destroy')
+
     // Routing for checkpoint
     Route.get('checkpoint', 'CheckpointController.index')
     Route.get('checkpoint/:id', 'CheckpointController.show')
