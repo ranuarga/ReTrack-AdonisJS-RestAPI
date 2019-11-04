@@ -23,8 +23,16 @@ class TeamSchema extends Schema {
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
         .nullable()
+      table
+        .integer('user_id')
+        .unsigned()
+        .references('user_id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
+        .nullable()
     })
-    
+
   }
 
   down () {

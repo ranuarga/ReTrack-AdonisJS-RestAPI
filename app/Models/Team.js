@@ -21,6 +21,10 @@ class Team extends Model {
             .pivotTable('members')
     }
 
+    coordinator () {
+        return this.belongsTo('App/Models/User')
+    }
+
     members () {
         return this.hasMany('App/Models/Member')
     }

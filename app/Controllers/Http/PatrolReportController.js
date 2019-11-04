@@ -4,7 +4,7 @@ const PatrolReport = use('App/Models/PatrolReport')
 
 class PatrolReportController {
     async index({ response }) {
-        // return History.all()
+        // return PatrolReport.all()
         try {
             const patrol_report = await PatrolReport.query()
                 .with('user')
