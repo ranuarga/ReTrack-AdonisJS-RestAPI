@@ -41,6 +41,13 @@ Route
     Route.put('car/:id', 'CarController.update')
     Route.delete('car/:id/delete', 'CarController.destroy')
 
+    // Routing for case entry
+    Route.get('case-entry', 'CaseEntryController.index')
+    Route.get('case-entry/:id', 'CaseEntryController.show')
+    Route.post('case-entry', 'CaseEntryController.store')
+    Route.put('case-entry/:id', 'CaseEntryController.update')
+    Route.delete('case-entry/:id/delete', 'CaseEntryController.destroy')
+
     // Routing for category
     Route.get('category', 'CategoryController.index')
     Route.get('category/:id', 'CategoryController.show')
