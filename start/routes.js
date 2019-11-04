@@ -95,6 +95,26 @@ Route
     // Delete USER FROM TEAM
     Route.delete('member/:team_id/:user_id/delete', 
       'MemberController.destroyUserFromTeam')
+
+    /*
+      Routing for task team, kinda different from others
+      because this one is pivot table
+    */
+    // Show ALL
+    Route.get('task_team', 'TaskTeamController.index')
+    // Show CASE IN TEAM
+    Route.get('task_team/team/:id', 'TaskTeamController.showByTeam')
+    // Show TEAMS where case_id = params.id
+    Route.get('task_team/case/:id', 'TaskTeamController.showByCase')
+    // You need to post team_id and user_id
+    Route.post('task_team', 'TaskTeamController.store')
+    // Delete TEAM
+    Route.delete('task_team/team/:id/delete', 'TaskTeamController.destroyTeam')
+    // Delete USER IN ALL TEAMS
+    Route.delete('task_team/case/:id/delete', 'TaskTeamController.destroyUser')
+    // Delete TASK FROM TEAM
+    Route.delete('task_team/:team_id/:case_id/delete', 
+      'TaskTeamController.destroyCaseFromTeam')
     
     // Routing for patrol report
     Route.get('patrol-report', 'PatrolReportController.index')
@@ -123,5 +143,13 @@ Route
     Route.post('user', 'UserController.store')
     Route.put('user/:id', 'UserController.update')
     Route.delete('user/:id/delete', 'UserController.destroy')
+  
+    // Routing for cordinator
+    Route.get('cordinator', 'CordinatorController.index')
+    Route.get('cordinator/:id', 'CordinatorController.show')
+    Route.post('cordinator', 'CordinatorController.store')
+    Route.put('cordinator/:id', 'CordinatorController.update')
+    Route.delete('cordinator/:id/delete', 'CordinatorController.destroy')
+    
   })
   .middleware(['auth'])

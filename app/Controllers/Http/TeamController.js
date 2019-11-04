@@ -22,6 +22,7 @@ class TeamController {
     async index({ response }) {
         try {
             const team = await Team.query()
+                .with('coordinator')
                 .with('users')
                 .with('car')
                 .with('agenda')
@@ -57,6 +58,7 @@ class TeamController {
         try {
             const data = request.only(
                 [
+                    'user_id',
                     'car_id',
                     'agenda_id'
                 ]
@@ -153,6 +155,7 @@ class TeamController {
     async update({ params, request }) {
         const teamId = params.id
         const {
+            user_id,
             car_id,
             agenda_id
 
@@ -160,6 +163,7 @@ class TeamController {
 
         const team = await Team.findByOrFail('team_id', teamId)
 
+        team.user_id = user_id
         team.car_id = car_id
         team.agenda_id = agenda_id
 
