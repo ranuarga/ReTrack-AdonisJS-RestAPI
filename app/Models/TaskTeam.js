@@ -20,12 +20,16 @@ class TaskTeam extends Model {
         return null
     }
 
-    case () {
-        return this.belongsTo('App/Models/CaseEntry');
+    case_entry () {
+        // This doesnt work
+        // return this.belongsTo('App/Models/CaseEntry')
+        // But this work, probably because the framework 
+        // interpret the id as case_entry_id
+        return this.belongsTo('App/Models/CaseEntry', 'case_id', 'case_id')
     }
 
     team () {
-        return this.belongsTo('App/Models/Team');
+        return this.belongsTo('App/Models/Team')
     }
 }
 

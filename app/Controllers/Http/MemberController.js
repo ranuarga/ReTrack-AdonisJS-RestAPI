@@ -5,7 +5,7 @@ const Member = use('App/Models/Member')
 
 class MemberController {
     async index({ response }) {
-        // return History.all()
+        // return Member.all()
         try {
             const member = await Member.query()
                 .with('user')

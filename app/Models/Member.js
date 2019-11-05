@@ -21,11 +21,11 @@ class Member extends Model {
     }
 
     user () {
-        return this.belongsTo('App/Models/User');
+        return this.belongsTo('App/Models/User')
     }
 
     team () {
-        return this.belongsTo('App/Models/Team');
+        return this.belongsTo('App/Models/Team')
     }
 }
 

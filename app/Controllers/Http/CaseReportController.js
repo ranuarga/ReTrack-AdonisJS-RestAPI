@@ -166,8 +166,8 @@ class CaseEntryController {
         case_report.case_reporter = case_report_reporter
         case_report.case_date = case_report_date
         case_report.case_time = case_report_time
-        case_report.case_longitude = case_report_longitude
-        case_report.case_latitude = case_report_latitude
+        case_report.case_report_longitude = case_report_longitude
+        case_report.case_report_latitude = case_report_latitude
         case_report.case_description = case_report_description
         case_report.case_photo = case_report_photo
 
@@ -186,7 +186,7 @@ class CaseEntryController {
     try {
       const case_reportId = params.id
 
-      const case_report = await CaseEntry.query()
+      const case_report = await CaseReport.query()
           .where({
               case_report_id: case_reportId
           }).delete()
