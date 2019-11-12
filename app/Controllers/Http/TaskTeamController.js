@@ -1,18 +1,18 @@
 'use strict'
 
 const Database = use('Database')
-const Member = use('App/Models/TaskTeam')
+const TaskTeam = use('App/Models/TaskTeam')
 
 class TaskTeamController {
     async index({ response }) {
-        // return History.all()
+        // return TaskTeam.all()
         try {
-            const member = await Member.query()
-                .with('case')
+            const task_team = await TaskTeam.query()
                 .with('team')
+                .with('case_entry')
                 .fetch()
 
-            return member
+            return task_team
         } catch (err) {
             return response.status(err.status)
         }
@@ -25,7 +25,7 @@ class TaskTeamController {
             const teamId = request.input('team_id')
             const caseId = request.input('case_id')
 
-            const task_teams = await Database
+            const task_team = await Database
                 .from('task_teams')
                 .insert(
                     {
@@ -34,7 +34,7 @@ class TaskTeamController {
                     }
                 )
 
-            return task_teams
+            return task_team
         } catch (err) {
             return response
                 .status(err.status)
@@ -46,31 +46,31 @@ class TaskTeamController {
         try {
             const teamId = params.id
 
-            const task_teams = await Member.query()
+            const task_team = await TaskTeam.query()
                 .where({
                     team_id: teamId
                 })
-                .with('case')
+                .with('case_entry')
                 .fetch()
 
-            if (task_teams.rows.length === 0) {
+            if (task_team.rows.length === 0) {
                 return response
                     .status(404)
                     .send({
                         message: {
-                            error: "No member of team found"
+                            error: "No case of team found"
                         }
                     })
             }
 
-            return task_teams
+            return task_team
         } catch (err) {
             if (err.name === 'ModelNotFoundException') {
                 return response
                     .status(err.status)
                     .send({
                         message: {
-                            error: 'No member of team found'
+                            error: 'No case of team found'
                         }
                     })
             }
@@ -82,31 +82,31 @@ class TaskTeamController {
         try {
             const caseId = params.id
 
-            const task_teams = await Member.query()
+            const task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
                 })
                 .with('team')
                 .fetch()
 
-            if (task_teams.rows.length === 0) {
+            if (task_team.rows.length === 0) {
                 return response
                     .status(404)
                     .send({
                         message: {
-                            error: "No team of member found"
+                            error: "No team of case found"
                         }
                     })
             }
 
-            return task_teams
+            return task_team
         } catch (err) {
             if (err.name === 'ModelNotFoundException') {
                 return response
                     .status(err.status)
                     .send({
                         message: {
-                            error: "No team of member found"
+                            error: "No team of case found"
                         }
                     })
             }
@@ -118,7 +118,7 @@ class TaskTeamController {
         try {
             const teamId = params.id
 
-            const task_teams = await Member.query()
+            const task_team = await TaskTeam.query()
                 .where({
                     team_id: teamId
                 }).delete()
@@ -131,7 +131,7 @@ class TaskTeamController {
         try {
             const caseId = params.id
 
-            const task_teams = await Member.query()
+            const task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
                 }).delete()
@@ -145,7 +145,7 @@ class TaskTeamController {
             const caseId = params.case_id
             const teamId = params.team_id
 
-            const member = await Member.query()
+            const task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
                 }).andWhere({

@@ -24,7 +24,6 @@ class CaseEntryController {
     try {
       const case_entry = await CaseEntry.query()
           .with('category')
-          // .with('case_reports')
           .fetch()
 
       return case_entry
@@ -90,24 +89,15 @@ class CaseEntryController {
     try {
       const caseId = params.id
 
-      const case_entry = await CaseEntry.query()
-          .where({
-              case_id: caseId
-          })
-          .with('category')
-          // .with('case_reports')
-          .fetch()
-
-      if (case_entry.rows.length === 0) {
-          return response
-              .status(404)
-              .send({
-                  message: {
-                      error: "No case entry found"
-                  }
-              })
-      }
-
+      let case_entry = await CaseEntry
+        .findOrFail(params.id)
+      case_entry = await CaseEntry.query()
+        .where({
+            case_id: caseId
+        })
+        .with('category')
+        .fetch()
+        
       return case_entry
   } catch (err) {
       if (err.name === 'ModelNotFoundException') {

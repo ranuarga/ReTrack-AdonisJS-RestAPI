@@ -116,11 +116,11 @@ Route
     Route.get('task_team/case/:id', 'TaskTeamController.showByCase')
     // You need to post team_id and user_id
     Route.post('task_team', 'TaskTeamController.store')
-    // Delete TEAM
+    // Delete TEAM FROM ALL CASE
     Route.delete('task_team/team/:id/delete', 'TaskTeamController.destroyTeam')
-    // Delete USER IN ALL TEAMS
-    Route.delete('task_team/case/:id/delete', 'TaskTeamController.destroyUser')
-    // Delete TASK FROM TEAM
+    // Delete CASE FROM ALL TEAMS
+    Route.delete('task_team/case/:id/delete', 'TaskTeamController.destroyCase')
+    // Delete CASE FROM TEAM
     Route.delete('task_team/:team_id/:case_id/delete', 
       'TaskTeamController.destroyCaseFromTeam')
     
