@@ -27,7 +27,9 @@ class RoleController {
         try {
             const roleId = params.id
     
-            const role = await Role.query()
+            let role = await Role.findOrFail(params.id)
+
+            role = await Role.query()
                 .where({
                     role_id: roleId
                 }).fetch()

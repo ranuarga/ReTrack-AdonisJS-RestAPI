@@ -99,18 +99,18 @@ class CaseEntryController {
         .fetch()
         
       return case_entry
-  } catch (err) {
-      if (err.name === 'ModelNotFoundException') {
-          return response
-              .status(err.status)
-              .send({
-                  message: {
-                      error: 'No case entry found'
-                  }
-              })
-      }
-      return response.status(err.status)
-  }
+    } catch (err) {
+        if (err.name === 'ModelNotFoundException') {
+            return response
+                .status(err.status)
+                .send({
+                    message: {
+                        error: 'No case entry found'
+                    }
+                })
+        }
+        return response.status(err.status)
+    }
   }
 
   /**

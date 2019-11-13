@@ -46,6 +46,10 @@ class TaskTeamController {
         try {
             const teamId = params.id
 
+
+            // let task_team = await TaskTeam
+            //     .findOrFail(params.id)
+
             const task_team = await TaskTeam.query()
                 .where({
                     team_id: teamId
@@ -53,15 +57,15 @@ class TaskTeamController {
                 .with('case_entry')
                 .fetch()
 
-            if (task_team.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: "No case of team found"
-                        }
-                    })
-            }
+            // if (task_team.rows.length === 0) {
+            //     return response
+            //         .status(404)
+            //         .send({
+            //             message: {
+            //                 error: "No case of team found"
+            //             }
+            //         })
+            // }
 
             return task_team
         } catch (err) {
@@ -81,6 +85,9 @@ class TaskTeamController {
     async showByCase({ params, response }) {
         try {
             const caseId = params.id
+
+            // let task_team = await TaskTeam
+            // .findOrFail(params.id)
 
             const task_team = await TaskTeam.query()
                 .where({

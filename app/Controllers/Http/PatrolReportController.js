@@ -29,22 +29,22 @@ class PatrolReportController {
                     'patrol_time',
                     'patrol_description',
                     'patrol_photo',
-                    'patrol_status'
+                    'patrol_status',
                 ]
             )
 
-            // const agendaExists = await PatrolReport.findBy('agenda_id', data.agenda_id)
-            // const userExists = await PatrolReport.findBy('user_id', data.user_id)
+            const agendaExists = await PatrolReport.findBy('agenda_id', data.agenda_id)
+            const userExists = await PatrolReport.findBy('user_id', data.user_id)
 
-            // if(userExists && agendaExists){
-            //     return response
-            //         .status(400)
-            //         .send({
-            //             message: {
-            //                 error: 'Patrol already created'
-            //             }
-            //         })
-            // }
+            if(userExists && agendaExists){
+                return response
+                    .status(400)
+                    .send({
+                        message: {
+                            error: 'Patrol already created'
+                        }
+                    })
+            }
 
             const patrol_report = await PatrolReport.create(data)
 
@@ -90,7 +90,10 @@ class PatrolReportController {
         try {
             const patrol_reportId = params.id
 
-            const patrol_report = await PatrolReport.query()
+            let patrol_report = await PatrolReport
+                .findOrFail(params.id)
+            
+            patrol_report = await PatrolReport.query()
                 .where({
                     patrol_report_id: patrol_reportId
                 })
@@ -98,15 +101,15 @@ class PatrolReportController {
                 .with('agenda')
                 .fetch()
 
-            if (patrol_report.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: "No patrol report found"
-                        }
-                    })
-            }
+            // if (patrol_report.rows.length === 0) {
+            //     return response
+            //         .status(404)
+            //         .send({
+            //             message: {
+            //                 error: "No patrol report found"
+            //             }
+            //         })
+            // }
 
             return patrol_report
         } catch (err) {

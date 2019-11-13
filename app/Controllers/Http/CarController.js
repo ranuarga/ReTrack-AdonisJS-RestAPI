@@ -96,22 +96,24 @@ class CarController {
         try {
             const carId = params.id
 
-            const car = await Car.query()
+            let car = await Car.findOrFail(params.id)
+
+            car = await Car.query()
                 .where({
                     car_id: carId
                 })
                 // .with('teams')
                 .fetch()
 
-            if (car.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: 'No car found'
-                        }
-                    })
-            }
+            // if (car.rows.length === 0) {
+            //     return response
+            //         .status(404)
+            //         .send({
+            //             message: {
+            //                 error: 'No car found'
+            //             }
+            //         })
+            // }
 
             return car
         } catch (err) {

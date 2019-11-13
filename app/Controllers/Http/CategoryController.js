@@ -70,18 +70,21 @@ class CategoryController {
     try {
       const categoryId = params.id
 
-      const category = await Category.query()
+      let category = await Category
+        .findOrFail(params.id)
+
+      category = await Category.query()
           .where({
               category_id: categoryId
           }).fetch()
 
-      if (category.rows.length === 0) {
-          return response
-          .status(404)
-          .send({ message: {
-              error: 'No category found'
-          } })
-      }
+      // if (category.rows.length === 0) {
+      //     return response
+      //     .status(404)
+      //     .send({ message: {
+      //         error: 'No category found'
+      //     } })
+      // }
 
       return category
   } catch (err) {

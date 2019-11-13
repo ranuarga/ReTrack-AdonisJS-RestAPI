@@ -1,0 +1,39 @@
+version: '3.2'
+services:
+  api:
+    container_name:  "retrack-nodejs"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh ./docker-start.sh
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+    ports:
+      - "3333:3333"
+    networks:
+      - default
+    depends_on:
+      - postgres
+  postgres:
+    container_name: "${APP_NAME}-postgres"
+    image: postgres:10.10
+    volumes:
+      - "./data/:/var/lib/postgressql/data"
+      #dump dir for production import
+      - "./dump/:/docker-entrypoint-initdb.d"
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+    environment:
+      - POSTGRES_USER=retrack
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=retrack
+
+#define network
+networks:
+  default:
+    driver: bridge

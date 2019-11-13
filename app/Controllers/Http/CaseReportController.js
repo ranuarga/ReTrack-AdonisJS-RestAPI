@@ -91,7 +91,10 @@ class CaseEntryController {
     try {
       const case_reportId = params.id
 
-      const case_report = await CaseReport.query()
+      let case_report = await CaseReport
+        .findOrFail(params.id)
+
+      case_report = await CaseReport.query()
           .where({
               case_report_id: case_reportId
           })
@@ -99,15 +102,15 @@ class CaseEntryController {
           .with('case_entry')
           .fetch()
 
-      if (case_report.rows.length === 0) {
-          return response
-              .status(404)
-              .send({
-                  message: {
-                      error: "No case entry found"
-                  }
-              })
-      }
+      // if (case_report.rows.length === 0) {
+      //     return response
+      //         .status(404)
+      //         .send({
+      //             message: {
+      //                 error: "No case entry found"
+      //             }
+      //         })
+      // }
 
       return case_report
   } catch (err) {

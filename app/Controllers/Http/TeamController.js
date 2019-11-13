@@ -99,7 +99,10 @@ class TeamController {
         try {
             const teamId = params.id
 
-            const team = await Team.query()
+            let team = await Team
+                .findOrFail(params.id)
+
+            team = await Team.query()
                 .where({
                     team_id: teamId
                 }).with('users')
@@ -107,15 +110,15 @@ class TeamController {
                 .with('agenda')
                 .fetch()
 
-            if (team.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: "No team found"
-                        }
-                    })
-            }
+            // if (team.rows.length === 0) {
+            //     return response
+            //         .status(404)
+            //         .send({
+            //             message: {
+            //                 error: "No team found"
+            //             }
+            //         })
+            // }
 
             return team
         } catch (err) {
