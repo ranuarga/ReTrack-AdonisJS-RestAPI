@@ -197,6 +197,26 @@ class CaseEntryController {
 
     }
   }
+
+  async pagination({request, response}) {
+    let pagination = request.only([ 'page', 'limit', 'coloumn', 'sort' ])
+    let page = pagination.page || 1;
+    let limit = pagination.limit || 10;
+    const case_report = await CaseReport.query()
+        .orderBy(`${pagination.column}`, `${pagination.sort}`)
+        .paginate(page, limit)
+    
+    return response.json(case_report)
+}
+
+async search({request, response}) {
+    let search = request.only(['column', 'value'])
+    let case_report= await CaseReport.query()
+    .whereRaw(`LOWER(${search.column}) LIKE '%${search.value.toLowerCase()}%'`)
+    .fetch()
+
+    return response.json(case_report)
+}
 }
 
 module.exports = CaseEntryController
