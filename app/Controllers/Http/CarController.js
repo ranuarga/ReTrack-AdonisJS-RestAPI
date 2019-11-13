@@ -187,6 +187,26 @@ class CarController {
 
         }
     }
+
+    async pagination({request, response}) {
+        let pagination = request.only([ 'page', 'limit', 'coloumn', 'sort' ])
+        let page = pagination.page || 1;
+        let limit = pagination.limit || 10;
+        const car = await Car.query()
+            .orderBy(`${pagination.column}`, `${pagination.sort}`)
+            .paginate(page, limit)
+        
+        return response.json(car)
+    }
+
+    async search({request, response}) {
+        let search = request.only(['column', 'value'])
+        let car = await Car.query()
+        .whereRaw(`LOWER(${search.column}) LIKE '%${search.value.toLowerCase()}%'`)
+        .fetch()
+
+        return response.json(car)
+    }
 }
 
 module.exports = CarController
