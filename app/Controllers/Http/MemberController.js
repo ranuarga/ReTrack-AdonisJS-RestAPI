@@ -46,6 +46,9 @@ class MemberController {
         try {
             const teamId = params.id
 
+            // let member = await Member
+            //     .findOrFail(params.id)
+
             const member = await Member.query()
                 .where({
                     team_id: teamId
@@ -81,6 +84,9 @@ class MemberController {
     async showByUser({ params, response }) {
         try {
             const userId = params.id
+
+            // let member = await Member
+            //     .findOrFail(params.id)
 
             const member = await Member.query()
                 .where({

@@ -60,7 +60,10 @@ class CheckpointController {
         try {
             const checkpointId = params.id
 
-            const checkpoint = await Checkpoint.query()
+            let checkpoint = Checkpoint
+                .findOrFail(params.id)
+
+            checkpoint = await Checkpoint.query()
                 .where({
                     checkpoint_id: checkpointId
                 })

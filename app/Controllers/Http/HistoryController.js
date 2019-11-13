@@ -92,21 +92,23 @@ class HistoryController {
     try {
       const historyId = params.id
 
-      const history = await History.query()
+      let history = History.findOrFail(params.id)
+
+      history = await History.query()
         .where({
           history_id: historyId
         }).with('user')
         .fetch()
 
-      if (history.rows.length === 0) {
-        return response
-          .status(404)
-          .send({
-            message: {
-              error: 'No history found'
-            }
-          })
-      }
+      // if (history.rows.length === 0) {
+      //   return response
+      //     .status(404)
+      //     .send({
+      //       message: {
+      //         error: 'No history found'
+      //       }
+      //     })
+      // }
 
       return history
     } catch (err) {

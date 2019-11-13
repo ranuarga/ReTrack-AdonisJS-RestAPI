@@ -84,21 +84,23 @@ class UserController {
         try {
             const userId = params.id
 
-            const user = await User.query()
+            let user = await User.findOrFail(params.id)
+
+            user = await User.query()
                 .where({
                     user_id: userId
                 }).with('role')
                 .fetch()
 
-            if( user.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: "No user found"
-                        }
-                    })
-            }
+            // if( user.rows.length === 0) {
+            //     return response
+            //         .status(404)
+            //         .send({
+            //             message: {
+            //                 error: "No user found"
+            //             }
+            //         })
+            // }
 
             return user
         }catch( err){

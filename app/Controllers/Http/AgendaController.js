@@ -55,21 +55,24 @@ class AgendaController {
         try {
             const agendaId = params.id
 
-            const agenda = await Agenda.query()
+            let agenda = await Agenda
+                .findOrFail(params.id)
+            
+            agenda = await Agenda.query()
                 .where({
                     agenda_id: agendaId
                 }).with('checkpoints')
                 .fetch()
 
-            if (agenda.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: "No agenda found"
-                        }
-                    })
-            }
+            // if (agenda.rows.length === 0) {
+            //     return response
+            //         .status(404)
+            //         .send({
+            //             message: {
+            //                 error: "No agenda found"
+            //             }
+            //         })
+            // }
 
             return agenda
         } catch (err) {
@@ -77,7 +80,7 @@ class AgendaController {
                 return response
                 .status(err.status)
                 .send({ message: {
-                    error: 'No agenda found'
+                    error: 'No agenda duar'
                 } })
             }
             return response.status(err.status)

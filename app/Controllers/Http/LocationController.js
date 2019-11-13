@@ -83,20 +83,23 @@ class LocationController {
     try {
       const locationId = params.id
 
-      const location = await Location.query()
+      let location = await Location
+        .findOrFail(params.id)
+
+      location = await Location.query()
         .where({
           location_id: locationId
         }).fetch()
 
-      if (location.rows.length === 0) {
-        return response
-          .status(404)
-          .send({
-            message: {
-              error: "No location found"
-            }
-          })
-      }
+      // if (location.rows.length === 0) {
+      //   return response
+      //     .status(404)
+      //     .send({
+      //       message: {
+      //         error: "No location found"
+      //       }
+      //     })
+      // }
 
       return location
     } catch (err) {
