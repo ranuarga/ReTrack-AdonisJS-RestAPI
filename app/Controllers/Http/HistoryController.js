@@ -32,6 +32,32 @@ class HistoryController {
   }
 
   /**
+   * Show a list of all histories with distinct.
+   * GET histories
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async historyDistinct({ response }) {
+    try {
+      const history = await History.query()
+        .distinct('user_id')
+        .distinct('team_id')
+        .distinct('history_longitude')
+        .distinct('history_latitude')
+        .distinct('history_datetime')
+        .with('user')
+        .fetch()
+
+      return history
+    } catch (err) {
+      return response.status(err.status)
+    }
+  }
+
+  /**
    * Render a form to be used for creating a new history.
    * GET histories/create
    *

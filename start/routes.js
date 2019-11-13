@@ -72,6 +72,7 @@ Route
     
     // Routing for history
     Route.get('history', 'HistoryController.index')
+    Route.get('history-distinct', 'HistoryController.historyDistinct')
     Route.get('history/:id', 'HistoryController.show')
     Route.post('history', 'HistoryController.store')
     Route.put('history/:id', 'HistoryController.update')
@@ -151,6 +152,6 @@ Route
     Route.post('user', 'UserController.store')
     Route.put('user/:id', 'UserController.update')
     Route.delete('user/:id/delete', 'UserController.destroy')
-   
+
   })
   .middleware(['auth'])
