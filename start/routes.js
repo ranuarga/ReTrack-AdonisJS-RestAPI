@@ -30,6 +30,7 @@ Route
     // Routing for agenda
     Route.get('agenda', 'AgendaController.index')
     Route.get('agenda/:id', 'AgendaController.show')
+    Route.get('agenda/user/:id', 'AgendaController.showUserAgenda')
     Route.post('agenda', 'AgendaController.store')
     Route.put('agenda/:id', 'AgendaController.update')
     Route.delete('agenda/:id/delete', 'AgendaController.destroy')

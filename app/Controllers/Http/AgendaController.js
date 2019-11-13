@@ -1,6 +1,8 @@
 'use strict'
 
 const Agenda = use('App/Models/Agenda')
+const Member = use('App/Models/Member')
+const Team = use('App/Models/Team')
 
 class AgendaController {
     async index ({ response }) {
@@ -73,6 +75,34 @@ class AgendaController {
             //             }
             //         })
             // }
+
+            return agenda
+        } catch (err) {
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No agenda duar'
+                } })
+            }
+            return response.status(err.status)
+        }
+    }
+
+    async showUserAgenda({params, response}){
+        try {            
+            let member = await Member.query()
+                .where('user_id', params.id)
+                .first()
+
+            let team = await Team.query()
+                .where('team_id', member.team_id)
+                .first()
+            
+            let agenda = await Agenda.query()
+                .where('agenda_id', team.agenda_id)
+                .with('checkpoints')
+                .first()
 
             return agenda
         } catch (err) {
