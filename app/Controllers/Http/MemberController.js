@@ -18,7 +18,7 @@ class MemberController {
         }
     }
 
-    // This store method is a lil bit different then others
+    // This store method is a lil bit different than others
     // because pivot table doesn't contain id column
     async store({ request, response }) {
         try {
