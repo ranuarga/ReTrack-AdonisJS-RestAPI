@@ -30,6 +30,8 @@ Route
     // Routing for agenda
     Route.get('agenda', 'AgendaController.index')
     Route.get('agenda/:id', 'AgendaController.show')
+    Route.get('agenda/search', 'AgendaController.search')
+    Route.get('agenda/pagination', 'AgendaController.pagination')
     Route.post('agenda', 'AgendaController.store')
     Route.put('agenda/:id', 'AgendaController.update')
     Route.delete('agenda/:id/delete', 'AgendaController.destroy')
@@ -37,6 +39,8 @@ Route
     // Routing for car
     Route.get('car', 'CarController.index')
     Route.get('car/:id', 'CarController.show')
+    Route.get('car/search', 'CarController.search')
+    Route.get('car/pagination', 'CarController.pagination')
     Route.post('car', 'CarController.store')
     Route.put('car/:id', 'CarController.update')
     Route.delete('car/:id/delete', 'CarController.destroy')
@@ -44,6 +48,8 @@ Route
     // Routing for case entry
     Route.get('case-entry', 'CaseEntryController.index')
     Route.get('case-entry/:id', 'CaseEntryController.show')
+    Route.get('case-entry/search', 'CaseEntryController.search')
+    Route.get('case-entry/pagination', 'CaseEntryController.pagination')
     Route.post('case-entry', 'CaseEntryController.store')
     Route.put('case-entry/:id', 'CaseEntryController.update')
     Route.delete('case-entry/:id/delete', 'CaseEntryController.destroy')
@@ -51,6 +57,8 @@ Route
     // Routing for case report
     Route.get('case-report', 'CaseReportController.index')
     Route.get('case-report/:id', 'CaseReportController.show')
+    Route.get('case-report/search', 'CaseReportController.search')
+    Route.get('case-report/pagination', 'CaseReportController.pagination')
     Route.post('case-report', 'CaseReportController.store')
     Route.put('case-report/:id', 'CaseReportController.update')
     Route.delete('case-report/:id/delete', 'CaseReportController.destroy')
@@ -59,6 +67,8 @@ Route
     // Routing for category
     Route.get('category', 'CategoryController.index')
     Route.get('category/:id', 'CategoryController.show')
+    Route.get('category/search', 'CategoryController.search')
+    Route.get('category/pagination', 'CategoryController.pagination')
     Route.post('category', 'CategoryController.store')
     Route.put('category/:id', 'CategoryController.update')
     Route.delete('category/:id/delete', 'CategoryController.destroy')
@@ -66,6 +76,8 @@ Route
     // Routing for checkpoint
     Route.get('checkpoint', 'CheckpointController.index')
     Route.get('checkpoint/:id', 'CheckpointController.show')
+    Route.get('checkpoint/search', 'CheckpointController.search')
+    Route.get('checkpoint/pagination', 'CheckpointController.pagination')
     Route.post('checkpoint', 'CheckpointController.store')
     Route.put('checkpoint/:id', 'CheckpointController.update')
     Route.delete('checkpoint/:id/delete', 'CheckpointController.destroy')
@@ -74,6 +86,8 @@ Route
     Route.get('history', 'HistoryController.index')
     Route.get('history-distinct', 'HistoryController.historyDistinct')
     Route.get('history/:id', 'HistoryController.show')
+    Route.get('history/search', 'HistoryController.search')
+    Route.get('history/pagination', 'HistoryController.pagination')
     Route.post('history', 'HistoryController.store')
     Route.put('history/:id', 'HistoryController.update')
     Route.delete('history/:id/delete', 'HistoryController.destroy')
@@ -81,6 +95,8 @@ Route
     // Routing for location
     Route.get('location', 'LocationController.index')
     Route.get('location/:id', 'LocationController.show')
+    Route.get('location/search', 'LocationController.search')
+    Route.get('location/pagination', 'LocationController.pagination')
     Route.post('location', 'LocationController.store')
     Route.put('location/:id', 'LocationController.update')
     Route.delete('location/:id/delete', 'LocationController.destroy')
@@ -128,6 +144,8 @@ Route
     // Routing for patrol report
     Route.get('patrol-report', 'PatrolReportController.index')
     Route.get('patrol-report/:id', 'PatrolReportController.show')
+    Route.get('patrol-report/search', 'PatrolReportController.search')
+    Route.get('patrol-report/pagination', 'PatrolReportController.pagination')
     Route.post('patrol-report', 'PatrolReportController.store')
     Route.put('patrol-report/:id', 'PatrolReportController.update')
     Route.delete('patrol-report/:id/delete', 'PatrolReportController.destroy')
@@ -135,6 +153,8 @@ Route
     // Routing for role
     Route.get('role', 'RoleController.index')
     Route.get('role/:id', 'RoleController.show')
+    Route.get('role/search', 'RoleController.search')
+    Route.get('role/pagination', 'RoleController.pagination')
     Route.post('role', 'RoleController.store')
     Route.put('role/:id', 'RoleController.update')
     Route.delete('role/:id/delete', 'RoleController.destroy')
@@ -142,6 +162,8 @@ Route
     // Routing for team
     Route.get('team', 'TeamController.index')
     Route.get('team/:id', 'TeamController.show')
+    Route.get('team/search', 'TeamController.search')
+    Route.get('team/pagination', 'TeamController.pagination')
     Route.post('team', 'TeamController.store')
     Route.put('team/:id', 'TeamController.update')
     Route.delete('team/:id/delete', 'TeamController.destroy')
@@ -149,6 +171,8 @@ Route
     // Routing for user
     Route.get('user', 'UserController.index')
     Route.get('user/:id', 'UserController.show')
+    Route.get('user/search', 'UserController.search')
+    Route.get('user/pagination', 'UserController.pagination')
     Route.post('user', 'UserController.store')
     Route.put('user/:id', 'UserController.update')
     Route.delete('user/:id/delete', 'UserController.destroy')
