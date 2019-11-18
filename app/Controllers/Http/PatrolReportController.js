@@ -99,18 +99,8 @@ class PatrolReportController {
                 })
                 .with('user')
                 .with('agenda')
-                .fetch()
-
-            // if (patrol_report.rows.length === 0) {
-            //     return response
-            //         .status(404)
-            //         .send({
-            //             message: {
-            //                 error: "No patrol report found"
-            //             }
-            //         })
-            // }
-
+                .first()
+                
             return patrol_report
         } catch (err) {
             if (err.name === 'ModelNotFoundException') {

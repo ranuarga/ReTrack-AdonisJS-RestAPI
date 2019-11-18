@@ -91,12 +91,13 @@ class CaseEntryController {
 
       let case_entry = await CaseEntry
         .findOrFail(params.id)
-      case_entry = await CaseEntry.query()
+      
+        case_entry = await CaseEntry.query()
         .where({
             case_id: caseId
         })
         .with('category')
-        .fetch()
+        .first()
         
       return case_entry
     } catch (err) {

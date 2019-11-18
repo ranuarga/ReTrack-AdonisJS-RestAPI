@@ -108,17 +108,7 @@ class TeamController {
                 }).with('users')
                 .with('car')
                 .with('agenda')
-                .fetch()
-
-            // if (team.rows.length === 0) {
-            //     return response
-            //         .status(404)
-            //         .send({
-            //             message: {
-            //                 error: "No team found"
-            //             }
-            //         })
-            // }
+                .first()
 
             return team
         } catch (err) {

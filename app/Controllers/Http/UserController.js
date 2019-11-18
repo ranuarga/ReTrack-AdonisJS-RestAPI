@@ -90,17 +90,7 @@ class UserController {
                 .where({
                     user_id: userId
                 }).with('role')
-                .fetch()
-
-            // if( user.rows.length === 0) {
-            //     return response
-            //         .status(404)
-            //         .send({
-            //             message: {
-            //                 error: "No user found"
-            //             }
-            //         })
-            // }
+                .first()
 
             return user
         }catch( err){

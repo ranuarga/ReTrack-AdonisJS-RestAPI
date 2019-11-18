@@ -1,8 +1,7 @@
 'use strict'
 
 const Agenda = use('App/Models/Agenda')
-const Member = use('App/Models/Member')
-const Team = use('App/Models/Team')
+const moment = use('moment')
 
 class AgendaController {
     async index ({ response }) {
@@ -64,17 +63,11 @@ class AgendaController {
                 .where({
                     agenda_id: agendaId
                 }).with('checkpoints')
-                .fetch()
-
-            // if (agenda.rows.length === 0) {
-            //     return response
-            //         .status(404)
-            //         .send({
-            //             message: {
-            //                 error: "No agenda found"
-            //             }
-            //         })
-            // }
+                .with('team')
+                .with('team.car')
+                .with('team.members')
+                .with('team.members.user')
+                .first()
 
             return agenda
         } catch (err) {
@@ -82,26 +75,27 @@ class AgendaController {
                 return response
                 .status(err.status)
                 .send({ message: {
-                    error: 'No agenda duar'
+                    error: 'No agenda found'
                 } })
             }
             return response.status(err.status)
         }
     }
 
-    async showUserAgenda({params, response}){
+    async showUserAgendaNow({params, response}){
         try {            
-            let member = await Member.query()
-                .where('user_id', params.id)
-                .first()
-
-            let team = await Team.query()
-                .where('team_id', member.team_id)
-                .first()
-            
             let agenda = await Agenda.query()
-                .where('agenda_id', team.agenda_id)
+                .innerJoin('teams', 'teams.agenda_id', 'agendas.agenda_id')
+                .innerJoin('members', 'members.team_id', 'teams.team_id')
+                .where('agenda_status', 'true')
+                .andWhere('agenda_date', moment())
+                .andWhere('members.user_id', params.id)
                 .with('checkpoints')
+                .with('team')
+                .with('team.car')
+                .with('team.user')
+                .with('team.members')
+                .with('team.members.user')
                 .first()
 
             return agenda
@@ -110,7 +104,34 @@ class AgendaController {
                 return response
                 .status(err.status)
                 .send({ message: {
-                    error: 'No agenda duar'
+                    error: 'No agenda found'
+                } })
+            }
+            return response.status(err.status)
+        }
+    }
+
+    async showUserAgendaAll({params, response}){
+        try {            
+            let agenda = await Agenda.query()
+                .innerJoin('teams', 'teams.agenda_id', 'agendas.agenda_id')
+                .innerJoin('members', 'members.team_id', 'teams.team_id')
+                .where('members.user_id', params.id)
+                .with('checkpoints')
+                .with('team')
+                .with('team.car')
+                .with('team.user')
+                .with('team.members')
+                .with('team.members.user')
+                .fetch()
+
+            return agenda
+        } catch (err) {
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No agenda found'
                 } })
             }
             return response.status(err.status)

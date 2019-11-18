@@ -76,15 +76,7 @@ class CategoryController {
       category = await Category.query()
           .where({
               category_id: categoryId
-          }).fetch()
-
-      // if (category.rows.length === 0) {
-      //     return response
-      //     .status(404)
-      //     .send({ message: {
-      //         error: 'No category found'
-      //     } })
-      // }
+          }).first()
 
       return category
   } catch (err) {

@@ -32,15 +32,7 @@ class RoleController {
             role = await Role.query()
                 .where({
                     role_id: roleId
-                }).fetch()
-    
-            if (role.rows.length === 0) {
-                return response
-                .status(404)
-                .send({ message: {
-                    error: 'No role found'
-                } })
-            }
+                }).first()
     
             return role
         } catch (err) {

@@ -103,17 +103,7 @@ class CarController {
                     car_id: carId
                 })
                 // .with('teams')
-                .fetch()
-
-            // if (car.rows.length === 0) {
-            //     return response
-            //         .status(404)
-            //         .send({
-            //             message: {
-            //                 error: 'No car found'
-            //             }
-            //         })
-            // }
+                .first()
 
             return car
         } catch (err) {

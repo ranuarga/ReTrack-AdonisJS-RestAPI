@@ -40,6 +40,10 @@ class Team extends Model {
     histories () {
         return this.hasMany('App/Models/History')
     }
+
+    user () {
+        return this.belongsTo('App/Models/User')
+    }
 }
 
 module.exports = Team

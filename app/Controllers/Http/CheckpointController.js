@@ -60,7 +60,7 @@ class CheckpointController {
         try {
             const checkpointId = params.id
 
-            let checkpoint = Checkpoint
+            let checkpoint = await Checkpoint
                 .findOrFail(params.id)
 
             checkpoint = await Checkpoint.query()
@@ -68,17 +68,7 @@ class CheckpointController {
                     checkpoint_id: checkpointId
                 })
                 .with('agenda')
-                .fetch()
-
-            if (checkpoint.rows.length === 0) {
-                return response
-                    .status(404)
-                    .send({
-                        message: {
-                            error: "No checkpoint found"
-                        }
-                    })
-            }
+                .first()
 
             return checkpoint
         } catch (err) {

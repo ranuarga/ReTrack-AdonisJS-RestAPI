@@ -100,17 +100,7 @@ class CaseEntryController {
           })
           .with('user')
           .with('case_entry')
-          .fetch()
-
-      // if (case_report.rows.length === 0) {
-      //     return response
-      //         .status(404)
-      //         .send({
-      //             message: {
-      //                 error: "No case entry found"
-      //             }
-      //         })
-      // }
+          .first()
 
       return case_report
   } catch (err) {

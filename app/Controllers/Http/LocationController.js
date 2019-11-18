@@ -89,17 +89,7 @@ class LocationController {
       location = await Location.query()
         .where({
           location_id: locationId
-        }).fetch()
-
-      // if (location.rows.length === 0) {
-      //   return response
-      //     .status(404)
-      //     .send({
-      //       message: {
-      //         error: "No location found"
-      //       }
-      //     })
-      // }
+        }).first()
 
       return location
     } catch (err) {

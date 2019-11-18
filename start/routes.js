@@ -30,7 +30,8 @@ Route
     // Routing for agenda
     Route.get('agenda', 'AgendaController.index')
     Route.get('agenda/:id', 'AgendaController.show')
-    Route.get('agenda/user/:id', 'AgendaController.showUserAgenda')
+    Route.get('agenda/user/:id/now', 'AgendaController.showUserAgendaNow')
+    Route.get('agenda/user/:id/all', 'AgendaController.showUserAgendaAll')
     Route.get('agenda/search', 'AgendaController.search')
     Route.get('agenda/pagination', 'AgendaController.pagination')
     Route.post('agenda', 'AgendaController.store')
