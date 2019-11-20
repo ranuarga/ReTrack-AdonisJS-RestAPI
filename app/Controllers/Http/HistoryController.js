@@ -76,7 +76,7 @@ class HistoryController {
         .distinct('history_longitude')
         .distinct('history_latitude')
         .distinct('history_datetime')
-        .where('history_datetime', '>', moment().subtract(1, 'days'))
+        .where('history_datetime', '>', moment().subtract(1, 'days').startOf('day'))
         .with('user')
         .fetch()
 
