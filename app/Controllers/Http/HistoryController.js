@@ -1,5 +1,7 @@
 'use strict'
+
 const History = use('App/Models/History')
+const moment = use('moment')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -48,6 +50,33 @@ class HistoryController {
         .distinct('history_longitude')
         .distinct('history_latitude')
         .distinct('history_datetime')
+        .with('user')
+        .fetch()
+
+      return history
+    } catch (err) {
+      return response.status(err.status)
+    }
+  }
+
+  /**
+   * Show a list of all histories with distinct today.
+   * GET histories
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async historyDistinctToday({ response }) {
+    try {
+      const history = await History.query()
+        .distinct('user_id')
+        .distinct('team_id')
+        .distinct('history_longitude')
+        .distinct('history_latitude')
+        .distinct('history_datetime')
+        .where('history_datetime', '>', moment().subtract(1, 'days'))
         .with('user')
         .fetch()
 
