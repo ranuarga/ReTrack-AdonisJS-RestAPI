@@ -34,6 +34,28 @@ class HistoryController {
   }
 
   /**
+   * Show a list of all histories today.
+   * GET histories
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async historyToday({ response }) {
+    try {
+      const history = await History.query()
+        .where('history_datetime', '>', moment().subtract(1, 'days').startOf('day'))
+        .with('user')
+        .fetch()
+
+      return history
+    } catch (err) {
+      return response.status(err.status)
+    }
+  }
+
+  /**
    * Show a list of all histories with distinct.
    * GET histories
    *
