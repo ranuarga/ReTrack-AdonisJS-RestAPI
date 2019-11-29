@@ -26,6 +26,7 @@ class TeamController {
                 .with('users')
                 .with('car')
                 .with('agenda')
+                .with('agenda.checkpoints')
                 .fetch()
             
             return team
