@@ -106,9 +106,12 @@ class TeamController {
             team = await Team.query()
                 .where({
                     team_id: teamId
-                }).with('users')
+                })
+                .with('coordinator')
+                .with('users')
                 .with('car')
                 .with('agenda')
+                .with('agenda.checkpoints')
                 .first()
 
             return team
