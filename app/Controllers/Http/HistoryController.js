@@ -1,7 +1,8 @@
 'use strict'
 
-const History = use('App/Models/History')
 const moment = use('moment')
+const Database = use('Database')
+const History = use('App/Models/History')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -27,6 +28,47 @@ class HistoryController {
         .orderBy('history_id', 'asc')
         .with('user')
         .fetch()
+
+      return history
+    } catch (err) {
+      return response.status(err.status)
+    }
+  }
+
+  /**
+   * Show a list of latest histories of teams today.
+   * GET histories
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async historyLatest({ response }) {
+    try {
+      const subQuery = Database
+        .from('histories')
+        .max('history_id')
+        .groupBy('team_id')
+        .select()
+
+      const history = await History.query()
+        .whereIn('history_id', subQuery)
+        .with('user')
+        .fetch()
+        
+        // Not Working
+        // Database
+        // .select('h1.*')
+        // .from('histories as h1')
+        // .letOuterJoin('histories as h2', function() {
+        //   this
+        //   .on('h1.history_id', '<', 'h2.history_id')
+        //   .on('h1.team_id', 'h2.team_id')
+        // })
+        // .where('h2.history_id', NULL)
+        // .with('user')
+        // .fetch()
 
       return history
     } catch (err) {

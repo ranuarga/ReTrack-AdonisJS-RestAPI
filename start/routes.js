@@ -86,6 +86,7 @@ Route
     
     // Routing for history
     Route.get('history', 'HistoryController.index')
+    Route.get('history/latest', 'HistoryController.historyLatest')
     Route.get('history/today', 'HistoryController.historyToday')
     Route.get('history/distinct', 'HistoryController.historyDistinct')
     Route.get('history/distinct/today', 'HistoryController.historyDistinctToday')
