@@ -24,6 +24,7 @@ class HistoryController {
     // return History.all()
     try {
       const history = await History.query()
+        .orderBy('history_id', 'asc')
         .with('user')
         .fetch()
 
@@ -46,6 +47,7 @@ class HistoryController {
     try {
       const history = await History.query()
         .where('history_datetime', '>', moment().subtract(1, 'days').startOf('day'))
+        .orderBy('history_id', 'asc')
         .with('user')
         .fetch()
 
