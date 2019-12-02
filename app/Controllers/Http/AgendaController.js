@@ -92,6 +92,7 @@ class AgendaController {
                 .andWhere('members.user_id', params.id)
                 .with('checkpoints')
                 .with('team')
+                .with('team.coordinator')
                 .with('team.car')
                 .with('team.user')
                 .with('team.members')
