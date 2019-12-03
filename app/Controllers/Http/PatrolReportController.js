@@ -33,19 +33,6 @@ class PatrolReportController {
                 ]
             )
 
-            const agendaExists = await PatrolReport.findBy('agenda_id', data.agenda_id)
-            const userExists = await PatrolReport.findBy('user_id', data.user_id)
-
-            if(userExists && agendaExists){
-                return response
-                    .status(400)
-                    .send({
-                        message: {
-                            error: 'Patrol already created'
-                        }
-                    })
-            }
-
             const patrol_report = await PatrolReport.create(data)
 
             return patrol_report
