@@ -23,7 +23,7 @@ class PatrolReportController {
                 [
                     'agenda_id',
                     'user_id',
-                    'partrol_longitude',
+                    'patrol_longitude',
                     'patrol_latitude',
                     'patrol_date',
                     'patrol_time',
