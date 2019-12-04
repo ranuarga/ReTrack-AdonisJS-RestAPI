@@ -1,6 +1,7 @@
 'use strict'
 
 const CaseEntry = use('App/Models/CaseEntry')
+const Helpers = use('Helpers')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -27,9 +28,9 @@ class CaseEntryController {
           .fetch()
 
       return case_entry
-  } catch (err) {
+    } catch (err) {
       return response.status(err.status)
-  }
+    }
   }
 
   /**
@@ -54,21 +55,47 @@ class CaseEntryController {
    */
   async store ({ request, response }) {
     try {
-      const data = request.only(
-        [
-          'category_id',
-          'case_reporter',
-          'case_date',
-          'case_time',
-          'case_longitude',
-          'case_latitude',
-          'case_description',
-          'case_photo'
-        ]
-      )
-      const case_entry = await CaseEntry.create(data)
+      const case_entry = new CaseEntry()
+      
+      const photoFile = request.file('case_photo', {
+        types: ['images', 'jpg', 'jpeg', 'png'],
+        size: '5mb'
+      })
 
-      return case_entry
+      let namePhotoCaseEntry = request.input('category_id') + '-' + request.input('case_reporter') + '.jpg'
+
+      await photoFile.move(Helpers.publicPath('uploads/case_entry'), {
+        name: namePhotoCaseEntry,
+        overwrite: true
+      })
+
+      if(!photoFile.moved()){
+          return photoFile.error()
+      }
+
+      const data = {
+        category_id: request.input('category_id'),
+        case_reporter: request.input('case_reporter'),
+        case_date: request.input('case_date'),
+        case_time: request.input('case_time'),
+        case_longitude: request.input('case_longitude'),
+        case_latitude: request.input('case_latitude'),
+        case_description: request.input('case_description'),
+      }
+
+      case_entry.category_id = data.category_id
+      case_entry.case_reporter = data.case_reporter
+      case_entry.case_date = data.case_date
+      case_entry.case_time = data.case_time
+      case_entry.case_longitude = data.case_longitude
+      case_entry.case_latitude = data.case_latitude
+      case_entry.case_description = data.case_description
+      case_entry.case_photo = namePhotoCaseEntry
+
+      await case_entry.save()
+      // const case_entry = await CaseEntry.create(data)
+      
+      return response.status(200).send(case_entry)
     } catch (err) {
       return response
         .status(err.status)
