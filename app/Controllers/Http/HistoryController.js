@@ -179,13 +179,13 @@ class HistoryController {
       const {
         // use this when user id isnt retrieved from auth but from request
         // user_id, 
-        team_id, history_longitude, history_latitude, history_datetime
+        team_id, history_longitude, history_latitude, history_accuracy, history_datetime
       } = request.all()
       // or if we want to get user id who is login right now we can use this but we must add auth first
       const user_id = auth.user.user_id
       const newHistory = await History.create(
         {
-          user_id, team_id, history_longitude, history_latitude, history_datetime
+          user_id, team_id, history_longitude, history_latitude, history_accuracy, history_datetime
         }
       )
 
@@ -260,7 +260,7 @@ class HistoryController {
   async update({ params, request }) {
     const historyId = params.id
     const {
-      user_id, team_id, history_longitude, history_latitude, history_datetime
+      user_id, team_id, history_longitude, history_latitude, history_accuracy, history_datetime
     } = request.all()
 
     const history = await History.findByOrFail('history_id', historyId)
@@ -269,6 +269,7 @@ class HistoryController {
     history.team_id = team_id
     history.history_longitude = history_longitude
     history.history_latitude = history_latitude
+    history.history_accuracy = history_accuracy
     history.history_datetime = history_datetime
 
     await history.save()

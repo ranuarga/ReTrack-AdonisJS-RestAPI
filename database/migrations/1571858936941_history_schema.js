@@ -25,6 +25,7 @@ class HistorySchema extends Schema {
         .nullable()
       table.decimal('history_longitude', 11, 8).nullable()
       table.decimal('history_latitude', 10, 8).nullable()
+      table.float('history_accuracy').nullable()
       table.datetime('history_datetime').nullable()
     })
   }
