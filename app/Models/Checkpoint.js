@@ -8,14 +8,6 @@ class Checkpoint extends Model {
         return 'checkpoint_id'
     }
 
-    static get createdAtColumn () {
-        return null
-    }
-
-    static get updatedAtColumn () {
-        return null
-    }
-
     static get dates () {
         return super.dates.concat(['checkpoint_datetime'])
     }

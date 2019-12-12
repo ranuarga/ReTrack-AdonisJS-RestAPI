@@ -30,6 +30,7 @@ class CaseReportSchema extends Schema {
       table.text('case_report_description').nullable()
       table.text('case_report_photo').nullable()
       table.integer('case_report_status').nullable()
+      table.timestamps()
     })
   }
 

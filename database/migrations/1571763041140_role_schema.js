@@ -8,6 +8,7 @@ class RoleSchema extends Schema {
     this.create('roles', (table) => {
       table.increments('role_id')
       table.string('role_name').nullable()
+      table.timestamps()
     })
   }
 

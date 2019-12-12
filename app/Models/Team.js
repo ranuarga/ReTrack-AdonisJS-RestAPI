@@ -8,14 +8,6 @@ class Team extends Model {
         return 'team_id'
     }
 
-    static get createdAtColumn(){
-        return null
-    }
-
-    static get updatedAtColumn(){
-        return null
-    }
-
     users () {
         return this.belongsToMany('App/Models/User')
             .pivotTable('members')

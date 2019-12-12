@@ -16,6 +16,7 @@ class TaskTeamSchema extends Schema {
         .references('case_entries.case_id')
         .onUpdate('cascade')
         .onDelete('cascade')
+      table.timestamps()
     })
   }
 

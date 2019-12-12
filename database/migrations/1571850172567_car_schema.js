@@ -10,6 +10,7 @@ class CarSchema extends Schema {
       table.string('car_number', 15).nullable()
       table.string('car_brand', 15).nullable()
       table.string('car_type', 15).nullable()
+      table.timestamps()
     })
   }
 

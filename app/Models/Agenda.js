@@ -15,13 +15,6 @@ class Agenda extends Model {
         return 'agenda_id'
     }
 
-    static get createdAtColumn () {
-        return null
-    }
-
-    static get updatedAtColumn () {
-        return null
-    }
 
     static get dates () {
         return super.dates.concat(['agenda_date'])

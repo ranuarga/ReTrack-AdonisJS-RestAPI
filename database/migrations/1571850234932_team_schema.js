@@ -26,6 +26,7 @@ class TeamSchema extends Schema {
         .onUpdate('CASCADE')
         .onDelete('SET NULL')
         .nullable()
+      table.timestamps()
     })
 
   }

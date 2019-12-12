@@ -30,7 +30,7 @@ class PatrolReportSchema extends Schema {
       table.text('patrol_description').nullable()
       table.text('patrol_photo').nullable()
       table.integer('patrol_status').nullable()
-      // table.timestamps()
+      table.timestamps()
     })
   }
 

@@ -12,14 +12,6 @@ class Member extends Model {
         return false
     }
     
-    static get createdAtColumn () {
-        return null
-    }
-
-    static get updatedAtColumn () {
-        return null
-    }
-
     user () {
         return this.belongsTo('App/Models/User')
     }

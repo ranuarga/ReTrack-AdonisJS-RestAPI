@@ -16,6 +16,7 @@ class MemberSchema extends Schema {
         .references('users.user_id')
         .onUpdate('cascade')
         .onDelete('cascade')
+      table.timestamps()
     })
   }
 

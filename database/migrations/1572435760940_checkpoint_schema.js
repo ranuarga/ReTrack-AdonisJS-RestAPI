@@ -18,7 +18,7 @@ class CheckpointSchema extends Schema {
       table.decimal('checkpoint_longitude', 11, 8).nullable()
       table.decimal('checkpoint_latitude', 10, 8).nullable()
       table.datetime('checkpoint_datetime').nullable()
-      // table.timestamps()
+      table.timestamps()
     })
   }
 

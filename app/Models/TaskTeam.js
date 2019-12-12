@@ -12,13 +12,6 @@ class TaskTeam extends Model {
         return false
     }
     
-    static get createdAtColumn () {
-        return null
-    }
-
-    static get updatedAtColumn () {
-        return null
-    }
 
     case_entry () {
         // This doesnt work

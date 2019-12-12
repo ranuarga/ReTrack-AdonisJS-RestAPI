@@ -20,7 +20,9 @@ class UserSchema extends Schema {
         .onDelete('SET NULL')
         .nullable()
       table.integer('user_status').nullable()
+      table.timestamps()
     })
+    
   }
 
   down () {

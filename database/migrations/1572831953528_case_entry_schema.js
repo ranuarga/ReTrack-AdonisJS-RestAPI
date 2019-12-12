@@ -22,7 +22,7 @@ class CaseEntrySchema extends Schema {
       table.decimal('case_latitude', 10, 8).nullable()
       table.text('case_description').nullable()
       table.text('case_photo').nullable()
-      // table.timestamps()
+      table.timestamps()
     })
   }
 

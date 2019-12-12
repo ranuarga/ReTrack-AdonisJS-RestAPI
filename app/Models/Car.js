@@ -9,14 +9,6 @@ class Car extends Model {
         return 'car_id'
     }
 
-    static get createdAtColumn () {
-        return null
-    }
-
-    static get updatedAtColumn () {
-        return null
-    }
-
     teams () {
         return this.hasMany('App/Models/Team')
     }

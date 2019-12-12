@@ -25,14 +25,6 @@ class User extends Model {
     return 'user_id'
   }
 
-  static get createdAtColumn () {
-    return null
-  }
-
-  static get updatedAtColumn () {
-      return null
-  }
-
   static get dates () {
       return super.dates.concat(['user_birthdate'])
   }

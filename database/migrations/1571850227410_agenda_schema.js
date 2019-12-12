@@ -9,7 +9,7 @@ class AgendaSchema extends Schema {
       table.increments('agenda_id')
       table.date('agenda_date').nullable()
       table.boolean('agenda_status').nullable()
-      // table.timestamps()
+      table.timestamps()
     })
   }
 

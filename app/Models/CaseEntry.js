@@ -8,14 +8,6 @@ class CaseEntry extends Model {
         return 'case_id'
     }
 
-    static get createdAtColumn () {
-        return null
-    }
-
-    static get updatedAtColumn () {
-        return null
-    }
-
     static get dates () {
         return super.dates.concat(['case_date'])
     }

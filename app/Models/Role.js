@@ -8,13 +8,6 @@ class Role extends Model {
         return 'role_id'
     }
     
-    static get createdAtColumn () {
-        return null
-    }
-    
-    static get updatedAtColumn () {
-        return null
-    }
 
     users () {
         return this.hasMany('App/Models/User')
