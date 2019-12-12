@@ -10,6 +10,7 @@ class LocationSchema extends Schema {
       table.string('location_name').nullable()
       table.decimal('location_longitude', 11, 8).nullable()
       table.decimal('location_latitude', 10, 8).nullable()
+      table.timestamps()
     })
   }
 

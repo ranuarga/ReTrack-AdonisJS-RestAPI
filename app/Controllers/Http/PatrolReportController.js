@@ -23,7 +23,7 @@ class PatrolReportController {
                 [
                     'agenda_id',
                     'user_id',
-                    'partrol_longitude',
+                    'patrol_longitude',
                     'patrol_latitude',
                     'patrol_date',
                     'patrol_time',
@@ -32,19 +32,6 @@ class PatrolReportController {
                     'patrol_status',
                 ]
             )
-
-            const agendaExists = await PatrolReport.findBy('agenda_id', data.agenda_id)
-            const userExists = await PatrolReport.findBy('user_id', data.user_id)
-
-            if(userExists && agendaExists){
-                return response
-                    .status(400)
-                    .send({
-                        message: {
-                            error: 'Patrol already created'
-                        }
-                    })
-            }
 
             const patrol_report = await PatrolReport.create(data)
 
