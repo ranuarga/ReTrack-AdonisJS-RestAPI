@@ -22,7 +22,10 @@ class TeamSchema extends Schema {
         .inTable('agendas')
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
-        
+      table.integer('user_id')
+        .unsigned()
+        .references('user_id')
+        .inTable('users')
         .onUpdate('CASCADE')
         .onDelete('SET NULL')
         .nullable()
