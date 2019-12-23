@@ -1,7 +1,8 @@
 'use strict'
 
-const CaseEntry = use('App/Models/CaseEntry')
+const fs = use('fs');
 const Helpers = use('Helpers')
+const CaseEntry = use('App/Models/CaseEntry')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -56,22 +57,6 @@ class CaseEntryController {
   async store ({ request, response }) {
     try {
       const case_entry = new CaseEntry()
-      
-      const photoFile = request.file('case_photo', {
-        types: ['images', 'jpg', 'jpeg', 'png'],
-        size: '5mb'
-      })
-
-      let namePhotoCaseEntry = request.input('category_id') + '-' + request.input('case_reporter') + '.jpg'
-
-      await photoFile.move(Helpers.publicPath('uploads/case_entry'), {
-        name: namePhotoCaseEntry,
-        overwrite: true
-      })
-
-      if(!photoFile.moved()){
-          return photoFile.error()
-      }
 
       const data = {
         category_id: request.input('category_id'),
@@ -90,10 +75,30 @@ class CaseEntryController {
       case_entry.case_longitude = data.case_longitude
       case_entry.case_latitude = data.case_latitude
       case_entry.case_description = data.case_description
-      case_entry.case_photo = namePhotoCaseEntry
 
       await case_entry.save()
-      // const case_entry = await CaseEntry.create(data)
+
+      // IF user upload a photo when create case_entry
+      if(request.file('case_photo')) {
+        const photoFile = request.file('case_photo', {
+          types: ['image'],
+          size: '5mb'
+        })
+        
+        let namePhotoCaseEntry = case_entry.case_id + '.jpg'
+
+        await photoFile.move(Helpers.publicPath('uploads/case_entry'), {
+          name: namePhotoCaseEntry,
+          overwrite: true
+        })
+  
+        if(!photoFile.moved()){
+            return photoFile.error()
+        }
+  
+        case_entry.case_photo = '/uploads/case_entry/' + namePhotoCaseEntry
+        case_entry.save()
+      }
       
       return response.status(200).send(case_entry)
     } catch (err) {
@@ -163,30 +168,49 @@ class CaseEntryController {
    */
   async update ({ params, request, response }) {
     const caseId = params.id
+    
+    const {
+      category_id,
+      case_reporter,
+      case_date,
+      case_time,
+      case_longitude,
+      case_latitude,
+      case_description,
+    } = request.all()
 
-        const {
-          category_id,
-          case_reporter,
-          case_date,
-          case_time,
-          case_longitude,
-          case_latitude,
-          case_description,
-          case_photo
-        } = request.all()
+    const case_entry = await CaseEntry.findByOrFail('case_id', caseId)
 
-        const case_entry = await CaseEntry.findByOrFail('case_id', caseId)
+    case_entry.category_id = category_id
+    case_entry.case_reporter = case_reporter
+    case_entry.case_date = case_date
+    case_entry.case_time = case_time
+    case_entry.case_longitude = case_longitude
+    case_entry.case_latitude = case_latitude
+    case_entry.case_description = case_description
 
-        case_entry.category_id = category_id
-        case_entry.case_reporter = case_reporter
-        case_entry.case_date = case_date
-        case_entry.case_time = case_time
-        case_entry.case_longitude = case_longitude
-        case_entry.case_latitude = case_latitude
-        case_entry.case_description = case_description
-        case_entry.case_photo = case_photo
+    // IF user upload a photo when update case_entry
+    if(request.file('case_photo')) {
+      const photoFile = request.file('case_photo', {
+        types: ['image'],
+        size: '5mb'
+      })
+      
+      let namePhotoCaseEntry = caseId + '.jpg'
 
-        await case_entry.save()
+      await photoFile.move(Helpers.publicPath('uploads/case_entry'), {
+        name: namePhotoCaseEntry,
+        overwrite: true
+      })
+
+      if(!photoFile.moved()){
+          return photoFile.error()
+      }
+
+      case_entry.case_photo = '/uploads/case_entry/' + namePhotoCaseEntry
+    }
+
+    await case_entry.save()
   }
 
   /**
@@ -197,16 +221,24 @@ class CaseEntryController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params }) {
+  async destroy ({ params, response }) {
     try {
       const caseId = params.id
 
       const case_entry = await CaseEntry.query()
-          .where({
-              case_id: caseId
-          }).delete()
-    } catch (err) {
+        .where({
+            case_id: caseId
+        }).first()
+      
+      if(case_entry.case_photo && fs.existsSync(Helpers.publicPath(case_entry.case_photo))) {
+        fs.unlinkSync(Helpers.publicPath(case_entry.case_photo))
+      }
 
+      case_entry.delete()
+    } catch (err) {
+      return response
+        .status(err.status)
+        .send(err)      
     }
   }
 
