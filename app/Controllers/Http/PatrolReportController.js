@@ -86,7 +86,6 @@ class PatrolReportController {
             patrol_date,
             patrol_time,
             patrol_description,
-            patrol_photo,
             patrol_status
         } = request.all()
 

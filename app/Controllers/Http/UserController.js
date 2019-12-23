@@ -27,7 +27,6 @@ class UserController {
                     'user_password',
                     'user_birthdate',
                     'user_gender',
-                    'user_photo',
                     'role_id',
                     'user_status'
                 ]
@@ -91,7 +90,6 @@ class UserController {
             user_password,
             user_birthdate,
             user_gender,
-            user_photo,
             role_id,
             user_status
         } = request.all()

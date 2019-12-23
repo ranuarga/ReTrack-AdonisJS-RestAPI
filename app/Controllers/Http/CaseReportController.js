@@ -66,7 +66,6 @@ class CaseEntryController {
           'case_report_longitude',
           'case_report_latitude',
           'case_report_description',
-          'case_report_photo',
           'case_report_status',
         ]
       )
@@ -182,7 +181,6 @@ class CaseEntryController {
           case_report_longitude,
           case_report_latitude,
           case_report_description,
-          case_report_photo
         } = request.all()
 
         const case_report = await CaseReport.findByOrFail('case_report_id', case_reportId)
