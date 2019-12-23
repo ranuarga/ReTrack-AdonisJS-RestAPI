@@ -18,6 +18,8 @@ class UserController {
     
     async store ({ request, response }) {
         try {
+            const user = new User()
+
             const data = request.only(
                 [
                     'user_employee_id',
@@ -31,6 +33,13 @@ class UserController {
                 ]
             )
 
+            user.user_employee_id = data.user_employee_id
+            user.user_name = data.user_name
+            user.user_password = data.user_password
+            user.user_gender = data.user_gender
+            user.role_id = data.role_id
+            user.user_status = data.user_status
+            
             const userExists = await User.findBy('user_employee_id', data.user_employee_id)
 
             if(userExists) {
@@ -41,11 +50,32 @@ class UserController {
                             error: 'User already created'
                         }
                     })
+            }else{
+                await user.save()
+                 // IF user upload a photo when create user
+                if(request.file('user_photo')) {
+                    const photoFile = request.file('user_photo', {
+                        types: ['image'],
+                        size: '5mb'
+                    })
+                    
+                    let namePhotoUser = user.user_id + '.jpg'
+
+                    await photoFile.move(Helpers.publicPath('uploads/user'), {
+                        name: namePhotoUser,
+                        overwrite: true
+                    })
+
+                    if(!photoFile.moved()){
+                        return photoFile.error()
+                    }
+
+                    user.user_photo = '/uploads/user/' + namePhotoUser
+                    user.save()
+                }
+                return response.status(200).send(user)
             }
-
-            const user = await User.create(data)
-
-            return user
+            
         } catch (err) {
             return response
                 .status(err.status)
@@ -73,9 +103,29 @@ class UserController {
         user.user_password = user_password
         user.user_birthdate = user_birthdate
         user.user_gender = user_gender
-        user.user_photo = user_photo
         user.role_id = role_id
         user.user_status = user_status
+
+         // IF user upload a photo when create user
+         if(request.file('user_photo')) {
+            const photoFile = request.file('user_photo', {
+                types: ['image'],
+                size: '5mb'
+            })
+            
+            let namePhotoUser = user.user_id + '.jpg'
+
+            await photoFile.move(Helpers.publicPath('uploads/user'), {
+                name: namePhotoUser,
+                overwrite: true
+            })
+
+            if(!photoFile.moved()){
+                return photoFile.error()
+            }
+
+            user.user_photo = '/uploads/user/' + namePhotoUser
+        }
 
         await user.save()
     }
@@ -112,9 +162,17 @@ class UserController {
             const user = await User.query()
                 .where({
                     user_id: userId
-                }).delete()
+                }).first()
+
+            if(user.user_photo && fs.existsSync(Helpers.publicPath(user.user_photo))) {
+                fs.unlinkSync(Helpers.publicPath(user.user_photo))
+                }
+        
+            user.delete()
         } catch (err) {
-            
+            return response
+                .status(err.status)
+                .send(err)  
         }
     }
 

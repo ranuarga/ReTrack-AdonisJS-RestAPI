@@ -55,6 +55,8 @@ class CaseEntryController {
    */
   async store ({ request, response }) {
     try {
+      const case_report = new CaseReport()
+
       const data = request.only(
         [
           'user_id',
@@ -68,9 +70,40 @@ class CaseEntryController {
           'case_report_status',
         ]
       )
-      const case_report = await CaseReport.create(data)
 
-      return case_report
+      case_report.user_id = data.user_id
+      case_report.case_id = data.case_id
+      case_report.case_report_time = data.case_report_time
+      case_report.case_report_longitude = data.case_report_longitude
+      case_report.case_report_latitude = data.case_report_latitude
+      case_report.case_report_description = data.case_report_description
+      case_report.case_report_status = data.case_report_status
+
+      await case_report.save()
+
+      // IF user upload a photo when create case_report
+      if(request.file('case_report_photo')) {
+        const photoFile = request.file('case_report_photo', {
+          types: ['image'],
+          size: '5mb'
+        })
+        
+        let namePhotoCaseReport = case_report.case_report_id + '.jpg'
+
+        await photoFile.move(Helpers.publicPath('uploads/case_report'), {
+          name: namePhotoCaseReport,
+          overwrite: true
+        })
+  
+        if(!photoFile.moved()){
+            return photoFile.error()
+        }
+
+        case_report.case_report_photo = '/uploads/case_report/' + namePhotoCaseReport
+        case_report.save()
+      }
+
+      return response.status(200).send(case_report)
     } catch (err) {
       return response
         .status(err.status)
@@ -162,8 +195,27 @@ class CaseEntryController {
         case_report.case_report_longitude = case_report_longitude
         case_report.case_report_latitude = case_report_latitude
         case_report.case_description = case_report_description
-        case_report.case_photo = case_report_photo
+       
+        // IF user upload a photo when create case_report
+        if(request.file('case_report_photo')) {
+          const photoFile = request.file('case_report_photo', {
+            types: ['image'],
+            size: '5mb'
+          })
+          
+          let namePhotoCaseReport = case_report.case_report_id + '.jpg'
 
+          await photoFile.move(Helpers.publicPath('uploads/case_report'), {
+            name: namePhotoCaseReport,
+            overwrite: true
+          })
+    
+          if(!photoFile.moved()){
+              return photoFile.error()
+          }
+
+          case_report.case_report_photo = '/uploads/case_report/' + namePhotoCaseReport
+        }
         await case_report.save()
   }
 
@@ -182,9 +234,17 @@ class CaseEntryController {
       const case_report = await CaseReport.query()
           .where({
               case_report_id: case_reportId
-          }).delete()
-    } catch (err) {
+          }).first()
 
+          if(case_report.case_report_photo && fs.existsSync(Helpers.publicPath(case_report.case_report_photo))) {
+            fs.unlinkSync(Helpers.publicPath(case_report.case_report_photo))
+          }
+    
+          case_report.delete()
+    } catch (err) {
+        return response
+          .status(err.status)
+          .send(err)
     }
   }
 

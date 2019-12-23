@@ -19,6 +19,8 @@ class PatrolReportController {
 
     async store({ request, response }) {
         try {
+            const patrol_report = new CaseReport()
+
             const data = request.only(
                 [
                     'agenda_id',
@@ -32,10 +34,40 @@ class PatrolReportController {
                     'patrol_status',
                 ]
             )
+            
+            patrol_report.agenda_id = data.agenda_id
+            patrol_report.user_id = data.user_id
+            patrol_report.patrol_longitude = data.patrol_longitude
+            patrol_report.patrol_latitude = data.patrol_latitude
+            patrol_report.patrol_date = data.patrol_date
+            patrol_report.patrol_time = data.patrol_description
+            patrol_report.patrol_status = data.patrol_status
+           
+            await patrol_report.save()
 
-            const patrol_report = await PatrolReport.create(data)
-
-            return patrol_report
+            // IF user upload a photo when create patrol_report
+            if(request.file('patrol_photo')) {
+              const photoFile = request.file('patrol_photo', {
+                types: ['image'],
+                size: '5mb'
+              })
+              
+              let namePhotoPatrolReport = patrol_report.patrol_report_id + '.jpg'
+      
+              await photoFile.move(Helpers.publicPath('uploads/patrol_report'), {
+                name: namePhotoPatrolReport,
+                overwrite: true
+              })
+        
+              if(!photoFile.moved()){
+                  return photoFile.error()
+              }
+        
+              patrol_report.patrol_photo = '/uploads/patrol_photo/' + namePhotoPatrolReport
+              patrol_report.save()
+            }
+            
+            return response.status(200).send(patrol_report)
         } catch (err) {
             return response
                 .status(err.status)
@@ -67,8 +99,28 @@ class PatrolReportController {
         patrol_report.patrol_date = patrol_date
         patrol_report.patrol_time = patrol_time
         patrol_report.patrol_description = patrol_description
-        patrol_report.patrol_photo = patrol_photo
         patrol_report.patrol_status = patrol_status
+
+        // IF user upload a photo when create patrol_report
+        if(request.file('patrol_photo')) {
+            const photoFile = request.file('patrol_photo', {
+              types: ['image'],
+              size: '5mb'
+            })
+            
+            let namePhotoPatrolReport = patrol_report.patrol_report_id + '.jpg'
+    
+            await photoFile.move(Helpers.publicPath('uploads/patrol_report'), {
+              name: namePhotoPatrolReport,
+              overwrite: true
+            })
+      
+            if(!photoFile.moved()){
+                return photoFile.error()
+            }
+      
+            patrol_report.patrol_photo = '/uploads/patrol_photo/' + namePhotoPatrolReport
+          }
 
         await patrol_report.save()
     }
@@ -110,9 +162,17 @@ class PatrolReportController {
             const patrol_report = await PatrolReport.query()
                 .where({
                     patrol_report_id: patrol_reportId
-                }).delete()
-        } catch (err) {
+                }).first()
 
+            if(patrol_report.patrol_photo && fs.existsSync(Helpers.publicPath(patrol_report.patrol_photo))) {
+                fs.unlinkSync(Helpers.publicPath(patrol_report.patrol_photo))
+                }
+        
+                patrol_report.delete()   
+        } catch (err) {
+            return response
+                .status(err.status)
+                .send(err) 
         }
     }
 
