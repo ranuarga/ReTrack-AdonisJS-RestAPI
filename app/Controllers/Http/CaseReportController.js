@@ -27,6 +27,7 @@ class CaseReportController {
       const case_report = await CaseReport.query()
           .with('user')
           .with('case_entry')
+          .with('case_entry.category')
           .fetch()
 
       return case_report
@@ -135,6 +136,7 @@ class CaseReportController {
           })
           .with('user')
           .with('case_entry')
+          .with('case_entry.category')
           .first()
 
       return case_report
