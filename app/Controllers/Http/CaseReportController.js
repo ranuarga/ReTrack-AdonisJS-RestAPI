@@ -11,7 +11,7 @@ const CaseReport = use('App/Models/CaseReport')
 /**
  * Resourceful controller for interacting with caseentries
  */
-class CaseEntryController {
+class CaseReportController {
   /**
    * Show a list of all caseentries.
    * GET caseentries
@@ -269,4 +269,4 @@ async search({request, response}) {
 }
 }
 
-module.exports = CaseEntryController
+module.exports = CaseReportController
