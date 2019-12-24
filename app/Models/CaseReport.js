@@ -16,8 +16,10 @@ class CaseReport extends Model {
         return this.belongsTo('App/Models/User')
     }
 
+    // Usually we fill belongsTo only with model but
+    // if it's not working specify PK(param 2) & FK(param 3)
     case_entry () {
-        return this.belongsTo('App/Models/CaseEntry')
+        return this.belongsTo('App/Models/CaseEntry', 'case_id', 'case_id')
     }
 }
 
