@@ -1,4 +1,7 @@
 'use strict'
+
+const fs = use('fs');
+const Helpers = use('Helpers')
 const User = use('App/Models/User')
 
 class UserController {
