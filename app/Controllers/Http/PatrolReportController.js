@@ -1,5 +1,7 @@
 'use strict'
 
+const fs = use('fs');
+const Helpers = use('Helpers')
 const PatrolReport = use('App/Models/PatrolReport')
 
 class PatrolReportController {

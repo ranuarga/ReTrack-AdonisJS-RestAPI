@@ -1,5 +1,7 @@
 'use strict'
 
+const fs = use('fs');
+const Helpers = use('Helpers')
 const CaseReport = use('App/Models/CaseReport')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
