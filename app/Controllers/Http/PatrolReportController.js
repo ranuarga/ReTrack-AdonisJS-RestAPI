@@ -1,5 +1,7 @@
 'use strict'
 
+const fs = use('fs');
+const Helpers = use('Helpers')
 const PatrolReport = use('App/Models/PatrolReport')
 
 class PatrolReportController {
@@ -19,52 +21,50 @@ class PatrolReportController {
 
     async store({ request, response }) {
         try {
-            const patrol_report = new CaseReport()
-
-            const data = request.only(
-                [
-                    'agenda_id',
-                    'user_id',
-                    'patrol_longitude',
-                    'patrol_latitude',
-                    'patrol_date',
-                    'patrol_time',
-                    'patrol_description',
-                    'patrol_photo',
-                    'patrol_status',
-                ]
-            )
+            const patrol_report = new PatrolReport()
+            
+            const data = {
+                agenda_id: request.input('agenda_id'),
+                user_id: request.input('user_id'),
+                patrol_longitude: request.input('patrol_longitude'),
+                patrol_latitude: request.input('patrol_latitude'),
+                patrol_date: request.input('patrol_date'),
+                patrol_time: request.input('patrol_time'),
+                patrol_description: request.input('patrol_description'),
+                patrol_status: request.input('patrol_status'),
+            }
             
             patrol_report.agenda_id = data.agenda_id
             patrol_report.user_id = data.user_id
             patrol_report.patrol_longitude = data.patrol_longitude
             patrol_report.patrol_latitude = data.patrol_latitude
             patrol_report.patrol_date = data.patrol_date
-            patrol_report.patrol_time = data.patrol_description
+            patrol_report.patrol_time = data.patrol_time
+            patrol_report.patrol_description = data.patrol_description
             patrol_report.patrol_status = data.patrol_status
-           
+            
             await patrol_report.save()
-
+            
             // IF user upload a photo when create patrol_report
             if(request.file('patrol_photo')) {
-              const photoFile = request.file('patrol_photo', {
-                types: ['image'],
-                size: '5mb'
-              })
-              
-              let namePhotoPatrolReport = patrol_report.patrol_report_id + '.jpg'
-      
-              await photoFile.move(Helpers.publicPath('uploads/patrol_report'), {
-                name: namePhotoPatrolReport,
-                overwrite: true
-              })
+                const photoFile = request.file('patrol_photo', {
+                    types: ['image'],
+                    size: '5mb'
+                })
+
+                let namePhotoPatrolReport = patrol_report.patrol_report_id + '.jpg'
         
-              if(!photoFile.moved()){
-                  return photoFile.error()
-              }
-        
-              patrol_report.patrol_photo = '/uploads/patrol_photo/' + namePhotoPatrolReport
-              patrol_report.save()
+                await photoFile.move(Helpers.publicPath('uploads/patrol_report'), {
+                    name: namePhotoPatrolReport,
+                    overwrite: true
+                })
+            
+                if(!photoFile.moved()){
+                    return photoFile.error()
+                }
+            
+                patrol_report.patrol_photo = '/uploads/patrol_report/' + namePhotoPatrolReport
+                patrol_report.save()
             }
             
             return response.status(200).send(patrol_report)
