@@ -72,6 +72,7 @@ class CaseReportController {
 
       case_report.user_id = data.user_id
       case_report.case_id = data.case_id
+      case_report.case_report_date = data.case_report_date
       case_report.case_report_time = data.case_report_time
       case_report.case_report_longitude = data.case_report_longitude
       case_report.case_report_latitude = data.case_report_latitude
@@ -173,27 +174,27 @@ class CaseReportController {
     const case_reportId = params.id
 
         const {
-          user_report_id,
-          case_report_id,
-          case_report_reporter,
+          user_id,
+          case_id,
           case_report_date,
           case_report_time,
           case_report_longitude,
           case_report_latitude,
           case_report_description,
+          case_report_status,
         } = request.all()
 
         const case_report = await CaseReport.findByOrFail('case_report_id', case_reportId)
 
-        case_report.user_id = user_report_id
-        case_report.case_id = case_report_id
-        case_report.case_reporter = case_report_reporter
-        case_report.case_date = case_report_date
-        case_report.case_time = case_report_time
+        case_report.user_id = user_id
+        case_report.case_id = case_id
+        case_report.case_report_date = case_report_date
+        case_report.case_report_time = case_report_time
         case_report.case_report_longitude = case_report_longitude
         case_report.case_report_latitude = case_report_latitude
         case_report.case_description = case_report_description
-       
+        case_report.case_report_status = case_report_status
+
         // IF user upload a photo when create case_report
         if(request.file('case_report_photo')) {
           const photoFile = request.file('case_report_photo', {
