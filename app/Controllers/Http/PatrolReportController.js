@@ -118,7 +118,7 @@ class PatrolReportController {
                 return photoFile.error()
             }
       
-            patrol_report.patrol_photo = '/uploads/patrol_photo/' + namePhotoPatrolReport
+            patrol_report.patrol_photo = '/uploads/patrol_report/' + namePhotoPatrolReport
           }
 
         await patrol_report.save()
