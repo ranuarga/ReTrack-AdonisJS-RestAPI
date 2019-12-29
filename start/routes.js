@@ -23,7 +23,6 @@ Route.get('/', () => {
 // Routing for auth
 Route.post('login', 'AuthController.login')
 Route.post('register', 'UserController.store')
-// Route.post('logout', 'AuthController.logout')
 
 Route
   .group(() => {
