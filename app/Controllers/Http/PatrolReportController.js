@@ -174,26 +174,6 @@ class PatrolReportController {
                 .send(err) 
         }
     }
-
-    async pagination({request, response}) {
-        let pagination = request.only([ 'page', 'limit', 'coloumn', 'sort' ])
-        let page = pagination.page || 1;
-        let limit = pagination.limit || 10;
-        const patrol_report = await PatrolReport.query()
-            .orderBy(`${pagination.column}`, `${pagination.sort}`)
-            .paginate(page, limit)
-        
-        return response.json(patrol_report)
-    }
-  
-    async search({request, response}) {
-        let search = request.only(['column', 'value'])
-        let patrol_report = await PatrolReport.query()
-        .whereRaw(`LOWER(${search.column}) LIKE '%${search.value.toLowerCase()}%'`)
-        .fetch()
-  
-        return response.json(patrol_report)
-    }
 }
 
 module.exports = PatrolReportController
