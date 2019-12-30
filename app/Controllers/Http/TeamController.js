@@ -27,7 +27,7 @@ class TeamController {
                 .with('car')
                 .with('agenda')
                 .with('agenda.checkpoints', (builder) => {
-                    builder.orderBy("checkpoint_id", "asc")
+                    builder.orderBy('checkpoint_id', 'asc')
                 })
                 .fetch()
             
@@ -114,7 +114,7 @@ class TeamController {
                 .with('car')
                 .with('agenda')
                 .with('agenda.checkpoints', (builder) => {
-                    builder.orderBy("checkpoint_id", "asc")
+                    builder.orderBy('checkpoint_id', 'asc')
                 })
                 .first()
 

@@ -9,7 +9,7 @@ class AgendaController {
             // return Agenda.all()
             const agenda = await Agenda.query()
                 .with('checkpoints', (builder) => {
-                    builder.orderBy("checkpoint_id", "asc")
+                    builder.orderBy('checkpoint_id', 'asc')
                 })
                 .fetch()
 
@@ -65,7 +65,7 @@ class AgendaController {
                 .where({
                     agenda_id: agendaId
                 }).with('checkpoints', (builder) => {
-                    builder.orderBy("checkpoint_id", "asc")
+                    builder.orderBy('checkpoint_id', 'asc')
                 })
                 .with('team')
                 .with('team.car')
@@ -94,6 +94,7 @@ class AgendaController {
                 .where('agenda_status', 'true')
                 .andWhere('agenda_date', '>', moment().subtract(1, 'days').startOf('day'))
                 .andWhere('members.user_id', params.id)
+                .orderBy('agenda_id', 'desc')
                 .with('checkpoints')
                 .with('team')
                 .with('team.coordinator')
