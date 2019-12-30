@@ -8,7 +8,9 @@ class AgendaController {
         try {
             // return Agenda.all()
             const agenda = await Agenda.query()
-                // .with('checkpoints')
+                .with('checkpoints', (builder) => {
+                    builder.orderBy("checkpoint_id", "asc")
+                })
                 .fetch()
 
             return agenda
@@ -62,7 +64,9 @@ class AgendaController {
             agenda = await Agenda.query()
                 .where({
                     agenda_id: agendaId
-                }).with('checkpoints')
+                }).with('checkpoints', (builder) => {
+                    builder.orderBy("checkpoint_id", "asc")
+                })
                 .with('team')
                 .with('team.car')
                 .with('team.members')
