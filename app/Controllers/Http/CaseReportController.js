@@ -22,7 +22,6 @@ class CaseReportController {
    * @param {View} ctx.view
    */
   async index ({ response }) {
-    // return CaseEntry.all()
     try {
       const case_report = await CaseReport.query()
           .with('user')
@@ -31,9 +30,9 @@ class CaseReportController {
           .fetch()
 
       return case_report
-  } catch (err) {
-      return response.status(err.status)
-  }
+    } catch (err) {
+        return response.status(err.status)
+    }
   }
 
   /**
@@ -140,7 +139,7 @@ class CaseReportController {
           .first()
 
       return case_report
-  } catch (err) {
+    } catch (err) {
       if (err.name === 'ModelNotFoundException') {
           return response
               .status(err.status)
@@ -151,10 +150,38 @@ class CaseReportController {
               })
       }
       return response.status(err.status)
-  }
+    }
   }
 
-  /**
+/**
+   * Display a user casereport.
+   * GET caseentries/:id
+   *
+   * @param {object} ctx
+   * @param {Request} ctx.request
+   * @param {Response} ctx.response
+   * @param {View} ctx.view
+   */
+  async showUserReport ({ params, response }) {
+    try {
+      const userId = params.id
+
+      const case_report = await CaseReport.query()
+          .where({
+              user_id: userId
+          })
+          .with('user')
+          .with('case_entry')
+          .with('case_entry.category')
+          .first()
+
+      return case_report
+    } catch (err) {
+      return response.status(err.status)
+    }
+  }
+
+    /**
    * Render a form to update an existing caseentry.
    * GET caseentries/:id/edit
    *

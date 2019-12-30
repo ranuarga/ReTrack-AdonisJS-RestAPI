@@ -6,9 +6,26 @@ const PatrolReport = use('App/Models/PatrolReport')
 
 class PatrolReportController {
     async index({ response }) {
-        // return PatrolReport.all()
         try {
             const patrol_report = await PatrolReport.query()
+                .with('user')
+                .with('agenda')
+                .fetch()
+
+            return patrol_report
+        } catch (err) {
+            return response.status(err.status)
+        }
+    }
+
+    async showUserReport({ params, response }) {
+        try {
+            const userId = params.id
+
+            const patrol_report = await PatrolReport.query()
+                .where({
+                    user_id: userId
+                })
                 .with('user')
                 .with('agenda')
                 .fetch()

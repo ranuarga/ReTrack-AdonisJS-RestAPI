@@ -59,13 +59,13 @@ Route
     // Routing for case report
     Route.get('case-report', 'CaseReportController.index')
     Route.get('case-report/:id', 'CaseReportController.show')
+    Route.get('case-report/user/:id', 'CaseReportController.showUserReport')
     Route.get('case-report/search', 'CaseReportController.search')
     Route.get('case-report/pagination', 'CaseReportController.pagination')
     Route.post('case-report', 'CaseReportController.store')
     Route.put('case-report/:id', 'CaseReportController.update')
     Route.delete('case-report/:id/delete', 'CaseReportController.destroy')
 
-    
     // Routing for category
     Route.get('category', 'CategoryController.index')
     Route.get('category/:id', 'CategoryController.show')
@@ -149,6 +149,7 @@ Route
     // Routing for patrol report
     Route.get('patrol-report', 'PatrolReportController.index')
     Route.get('patrol-report/:id', 'PatrolReportController.show')
+    Route.get('patrol-report/user/:id', 'PatrolReportController.showUserReport')
     Route.get('patrol-report/search', 'PatrolReportController.search')
     Route.get('patrol-report/pagination', 'PatrolReportController.pagination')
     Route.post('patrol-report', 'PatrolReportController.store')
