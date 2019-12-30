@@ -96,25 +96,6 @@ class CheckpointController {
         }
     }
 
-    async pagination({request, response}) {
-        let pagination = request.only([ 'page', 'limit', 'coloumn', 'sort' ])
-        let page = pagination.page || 1;
-        let limit = pagination.limit || 10;
-        const checkpoint = await Checkpoint.query()
-            .orderBy(`${pagination.column}`, `${pagination.sort}`)
-            .paginate(page, limit)
-        
-        return response.json(checkpoint)
-    }
-  
-    async search({request, response}) {
-        let search = request.only(['column', 'value'])
-        let checkpoint= await Checkpoint.query()
-        .whereRaw(`LOWER(${search.column}) LIKE '%${search.value.toLowerCase()}%'`)
-        .fetch()
-  
-        return response.json(checkpoint)
-    }
 }
 
 module.exports = CheckpointController
