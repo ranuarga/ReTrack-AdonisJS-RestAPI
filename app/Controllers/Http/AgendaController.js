@@ -94,7 +94,7 @@ class AgendaController {
                 .where('agenda_status', 'true')
                 .andWhere('agenda_date', '>', moment().subtract(1, 'days').startOf('day'))
                 .andWhere('members.user_id', params.id)
-                .orderBy('agenda_id', 'desc')
+                .orderBy('teams.agenda_id', 'desc')
                 .with('checkpoints')
                 .with('team')
                 .with('team.coordinator')
