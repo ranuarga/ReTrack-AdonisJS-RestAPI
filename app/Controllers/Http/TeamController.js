@@ -66,7 +66,17 @@ class TeamController {
                     'agenda_id'
                 ]
             )
-
+            
+            if(data.agenda_id == null) {
+                return response
+                    .status(400)
+                    .send({
+                        message: {
+                            error: 'agenda_id is required'
+                        }
+                    })
+            }
+            
             const teamExists = await Team.findBy('agenda_id', data.agenda_id)
 
             if (teamExists) {

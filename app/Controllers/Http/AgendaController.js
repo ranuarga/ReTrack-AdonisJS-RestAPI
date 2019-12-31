@@ -144,16 +144,26 @@ class AgendaController {
         }
     }
 
-    async destroy({ params }) {
+    async destroy({ params, response }) {
         try {
             const agendaId = params.id
 
-            const agenda = await Checkpoint.query()
+            let agenda = await Agenda
+                .findOrFail(agendaId)
+            
+            agenda = await Agenda.query()
                 .where({
                     agenda_id: agendaId
                 }).delete()
         } catch (err) {
-            
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No agenda found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 }
