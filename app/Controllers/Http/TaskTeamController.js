@@ -72,10 +72,9 @@ class TaskTeamController {
         try {
             const caseId = params.id
 
-            // let task_team = await TaskTeam
-            // .findOrFail(params.id)
+            let task_team = await TaskTeam.findOrFail(params.id)
 
-            const task_team = await TaskTeam.query()
+            task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
                 })
@@ -111,12 +110,21 @@ class TaskTeamController {
         try {
             const teamId = params.id
 
+            let task_team = await TaskTeam.findOrFail(teamId)
+
             const task_team = await TaskTeam.query()
                 .where({
                     team_id: teamId
                 }).delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No team found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 
@@ -124,12 +132,21 @@ class TaskTeamController {
         try {
             const caseId = params.id
 
-            const task_team = await TaskTeam.query()
+            let task_team = await TaskTeam.findOrFail(caseId)
+
+            task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
                 }).delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No case found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 
@@ -138,7 +155,9 @@ class TaskTeamController {
             const caseId = params.case_id
             const teamId = params.team_id
 
-            const task_team = await TaskTeam.query()
+            let task_team = await TaskTeam.findOrFail(caseId, teamId)
+
+            task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
                 }).andWhere({
@@ -146,7 +165,14 @@ class TaskTeamController {
                 })
                 .delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No task team found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 }

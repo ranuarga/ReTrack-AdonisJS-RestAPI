@@ -13,7 +13,6 @@
 |
 */
 
-/** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
 Route.get('/', () => {
@@ -23,7 +22,6 @@ Route.get('/', () => {
 // Routing for auth
 Route.post('login', 'AuthController.login')
 Route.post('register', 'UserController.store')
-// Route.post('logout', 'AuthController.logout')
 
 Route
   .group(() => {

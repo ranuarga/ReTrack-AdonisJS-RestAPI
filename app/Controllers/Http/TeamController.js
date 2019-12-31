@@ -2,23 +2,8 @@
 
 const Team = use('App/Models/Team')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with teams
- */
 class TeamController {
-    /**
-     * Show a list of all teams.
-     * GET teams
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     * @param {View} ctx.view
-     */
+    
     async index({ response }) {
         try {
             const team = await Team.query()
@@ -37,26 +22,6 @@ class TeamController {
         }
     }
 
-    /**
-     * Render a form to be used for creating a new team.
-     * GET teams/create
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     * @param {View} ctx.view
-     */
-    async create({ request, response, view }) {
-    }
-
-    /**
-     * Create/save a new team.
-     * POST teams
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     */
     async store({ request, response }) {
         try {
             const data = request.only(
@@ -99,15 +64,6 @@ class TeamController {
         }
     }
 
-    /**
-     * Display a single team.
-     * GET teams/:id
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     * @param {View} ctx.view
-     */
     async show({ params, response }) {
         try {
             const teamId = params.id
@@ -143,26 +99,6 @@ class TeamController {
         }
     }
 
-    /**
-     * Render a form to update an existing team.
-     * GET teams/:id/edit
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     * @param {View} ctx.view
-     */
-    async edit({ params, request, response, view }) {
-    }
-
-    /**
-     * Update team details.
-     * PUT or PATCH teams/:id
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     */
     async update({ params, request }) {
         const teamId = params.id
         const {
@@ -181,24 +117,25 @@ class TeamController {
         await team.save()
     }
 
-    /**
-     * Delete a team with id.
-     * DELETE teams/:id
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     */
     async destroy({ params }) {
         try {
             const teamId = params.id
 
-            const team = await Team.query()
+            let team = await team.findByOrFail(teamId)
+
+            team = await Team.query()
                 .where({
                     team_id: teamId
                 }).delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No team found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 

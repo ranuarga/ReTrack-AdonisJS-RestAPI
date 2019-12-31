@@ -62,7 +62,6 @@ class PatrolReportController {
             
             await patrol_report.save()
             
-            // IF user upload a photo when create patrol_report
             if(request.file('patrol_photo')) {
                 const photoFile = request.file('patrol_photo', {
                     types: ['image'],
@@ -117,7 +116,6 @@ class PatrolReportController {
         patrol_report.patrol_description = patrol_description
         patrol_report.patrol_status = patrol_status
 
-        // IF user upload a photo when create patrol_report
         if(request.file('patrol_photo')) {
             const photoFile = request.file('patrol_photo', {
               types: ['image'],
@@ -175,7 +173,9 @@ class PatrolReportController {
         try {
             const patrol_reportId = params.id
 
-            const patrol_report = await PatrolReport.query()
+            let patrol_report = await PatrolReport.findByOrFail(patrol_reportId)
+
+            patrol_report = await PatrolReport.query()
                 .where({
                     patrol_report_id: patrol_reportId
                 }).first()
@@ -186,9 +186,14 @@ class PatrolReportController {
         
                 patrol_report.delete()   
         } catch (err) {
-            return response
+            if (err.name === 'ModelNotFoundException') {
+                return response
                 .status(err.status)
-                .send(err) 
+                .send({ message: {
+                    error: 'No patrol report found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 }

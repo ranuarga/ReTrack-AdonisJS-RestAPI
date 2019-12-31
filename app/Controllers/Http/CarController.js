@@ -2,28 +2,11 @@
 
 const Car = use('App/Models/Car')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with cars
- */
 class CarController {
-    /**
-       * Show a list of all cars.
-       * GET cars
-       *
-       * @param {object} ctx
-       * @param {Request} ctx.request
-       * @param {Response} ctx.response
-       * @param {View} ctx.view
-       */
+    
     async index({ response }) {
         try {
-            // return Car.all()
             const car = await Car.query()
-                // .with('teams')
                 .fetch()
             return car
         } catch (err) {
@@ -31,26 +14,6 @@ class CarController {
         }
     }
 
-    /**
-       * Render a form to be used for creating a new car.
-       * GET cars/create
-       *
-       * @param {object} ctx
-       * @param {Request} ctx.request
-       * @param {Response} ctx.response
-       * @param {View} ctx.view
-       */
-    async create({ request, response, view }) {
-    }
-
-    /**
-       * Create/save a new car.
-       * POST cars
-       *
-       * @param {object} ctx
-       * @param {Request} ctx.request
-       * @param {Response} ctx.response
-       */
     async store({ request, response }) {
         try {
             const data = request.only(
@@ -83,15 +46,6 @@ class CarController {
         }
     }
 
-    /**
-       * Display a single car.
-       * GET cars/:id
-       *
-       * @param {object} ctx
-       * @param {Request} ctx.request
-       * @param {Response} ctx.response
-       * @param {View} ctx.view
-       */
     async show({ params, response}) {
         try {
             const carId = params.id
@@ -102,7 +56,6 @@ class CarController {
                 .where({
                     car_id: carId
                 })
-                // .with('teams')
                 .first()
 
             return car
@@ -120,26 +73,6 @@ class CarController {
         }
     }
 
-    /**
-       * Render a form to update an existing car.
-       * GET cars/:id/edit
-       *
-       * @param {object} ctx
-       * @param {Request} ctx.request
-       * @param {Response} ctx.response
-       * @param {View} ctx.view
-       */
-    async edit({ params, request, response, view }) {
-    }
-
-    /**
-       * Update car details.
-       * PUT or PATCH cars/:id
-       *
-       * @param {object} ctx
-       * @param {Request} ctx.request
-       * @param {Response} ctx.response
-       */
     async update({ params, request }) {
         const carId = params.id
         const {
@@ -157,24 +90,25 @@ class CarController {
         await car.save()
     }
 
-    /**
-     * Delete a car with id.
-     * DELETE cars/:id
-     *
-     * @param {object} ctx
-     * @param {Request} ctx.request
-     * @param {Response} ctx.response
-     */
     async destroy({ params }) {
         try {
             const carId = params.id
 
-            const car = await Car.query()
+            let car = await Car.findByOrFail(carId)
+
+            car = await Car.query()
                 .where({
                     car_id: carId
                 }).delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No Car found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 

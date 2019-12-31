@@ -4,23 +4,8 @@ const moment = use('moment')
 const Database = use('Database')
 const History = use('App/Models/History')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with histories
- */
 class HistoryController {
-  /**
-   * Show a list of all histories.
-   * GET histories
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+
   async index({ response }) {
     // return History.all()
     try {
@@ -35,15 +20,6 @@ class HistoryController {
     }
   }
 
-  /**
-   * Show a list of latest histories of teams today.
-   * GET histories
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async historyLatest({ response }) {
     try {
       const subQuery = Database
@@ -57,35 +33,13 @@ class HistoryController {
         .andWhere('history_datetime', '>', moment().subtract(1, 'days').startOf('day'))
         .with('user')
         .fetch()
-        
-        // Not Working
-        // Database
-        // .select('h1.*')
-        // .from('histories as h1')
-        // .letOuterJoin('histories as h2', function() {
-        //   this
-        //   .on('h1.history_id', '<', 'h2.history_id')
-        //   .on('h1.team_id', 'h2.team_id')
-        // })
-        // .where('h2.history_id', NULL)
-        // .with('user')
-        // .fetch()
 
-      return history
+        return history
     } catch (err) {
       return response.status(err.status)
     }
   }
 
-  /**
-   * Show a list of all histories today.
-   * GET histories
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async historyToday({ response }) {
     try {
       const history = await History.query()
@@ -100,15 +54,6 @@ class HistoryController {
     }
   }
 
-  /**
-   * Show a list of all histories with distinct.
-   * GET histories
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async historyDistinct({ response }) {
     try {
       const history = await History.query()
@@ -126,15 +71,6 @@ class HistoryController {
     }
   }
 
-  /**
-   * Show a list of all histories with distinct today.
-   * GET histories
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async historyDistinctToday({ response }) {
     try {
       const history = await History.query()
@@ -153,35 +89,12 @@ class HistoryController {
     }
   }
 
-  /**
-   * Render a form to be used for creating a new history.
-   * GET histories/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {
-  }
-
-  /**
-   * Create/save a new history.
-   * POST histories
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-
   async store({ request, response, auth }) {
     try {
       const {
-        // use this when user id isnt retrieved from auth but from request
-        // user_id, 
         team_id, history_longitude, history_latitude, history_accuracy, history_datetime
       } = request.all()
-      // or if we want to get user id who is login right now we can use this but we must add auth first
+
       const user_id = auth.user.user_id
       const newHistory = await History.create(
         {
@@ -201,15 +114,6 @@ class HistoryController {
     }
   }
 
-  /**
-   * Display a single history.
-   * GET histories/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async show({ params, response }) {
     try {
       const historyId = params.id
@@ -237,26 +141,6 @@ class HistoryController {
     }
   }
 
-  /**
-   * Render a form to update an existing history.
-   * GET histories/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {
-  }
-
-  /**
-   * Update history details.
-   * PUT or PATCH histories/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async update({ params, request }) {
     const historyId = params.id
     const {
@@ -275,25 +159,25 @@ class HistoryController {
     await history.save()
   }
 
-  /**
-   * Delete a history with id.
-   * DELETE histories/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async destroy({ params }) {
     try {
-      const historyId = params.id //history_id to be deleted
+      const historyId = params.id
 
-      // looking for history
-      const history = await History.query()
+      let history = await History.findByOrFail(historyId)
+
+      history = await History.query()
         .where({
           history_id: historyId
         }).delete()
     } catch (err) {
-
+        if (err.name === 'ModelNotFoundException') {
+          return response
+          .status(err.status)
+          .send({ message: {
+              error: 'No history found'
+          } })
+      }
+      return response.status(err.status)
     }
   }
 

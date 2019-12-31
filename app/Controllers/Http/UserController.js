@@ -6,7 +6,6 @@ const User = use('App/Models/User')
 
 class UserController {
     async index ({ response }) {
-        // return User.all()
 
         try {
             const user = await User.query()
@@ -107,7 +106,6 @@ class UserController {
         user.role_id = role_id
         user.user_status = user_status
 
-         // IF user upload a photo when create user
          if(request.file('user_photo')) {
             const photoFile = request.file('user_photo', {
                 types: ['image'],
@@ -160,7 +158,9 @@ class UserController {
         try {
             const userId = params.id
 
-            const user = await User.query()
+            let user = await User.findByOrFail(userId)
+
+            user = await User.query()
                 .where({
                     user_id: userId
                 }).first()
@@ -171,9 +171,14 @@ class UserController {
         
             user.delete()
         } catch (err) {
-            return response
+            if (err.name === 'ModelNotFoundException') {
+                return response
                 .status(err.status)
-                .send(err)  
+                .send({ message: {
+                    error: 'No agenda found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 }

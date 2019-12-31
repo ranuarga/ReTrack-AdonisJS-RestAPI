@@ -3,8 +3,6 @@ const Role = use('App/Models/Role')
 
 class RoleController {
     async index ({ response }) {
-        // return Role.all()
-
         try {
             const role = await Role.query()
                 .fetch()
@@ -64,12 +62,21 @@ class RoleController {
         try {
             const roleId = params.id
 
-            const role = await Role.query()
+            let role = await Role.findByOrFail(roleId)
+
+            role = await Role.query()
                 .where({
                     role_id: roleId
                 }).delete()
         } catch (err) {
-            
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No role found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 

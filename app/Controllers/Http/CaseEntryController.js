@@ -4,25 +4,8 @@ const fs = use('fs');
 const Helpers = use('Helpers')
 const CaseEntry = use('App/Models/CaseEntry')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with caseentries
- */
 class CaseEntryController {
-  /**
-   * Show a list of all caseentries.
-   * GET caseentries
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async index ({ response }) {
-    // return CaseEntry.all()
     try {
       const case_entry = await CaseEntry.query()
           .with('category')
@@ -34,26 +17,6 @@ class CaseEntryController {
     }
   }
 
-  /**
-   * Render a form to be used for creating a new caseentry.
-   * GET caseentries/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {
-  }
-
-  /**
-   * Create/save a new caseentry.
-   * POST caseentries
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store ({ request, response }) {
     try {
       const case_entry = new CaseEntry()
@@ -78,7 +41,6 @@ class CaseEntryController {
 
       await case_entry.save()
 
-      // IF user upload a photo when create case_entry
       if(request.file('case_photo')) {
         const photoFile = request.file('case_photo', {
           types: ['image'],
@@ -108,15 +70,6 @@ class CaseEntryController {
     }
   }
 
-  /**
-   * Display a single caseentry.
-   * GET caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async show ({ params, response }) {
     try {
       const caseId = params.id
@@ -146,26 +99,6 @@ class CaseEntryController {
     }
   }
 
-  /**
-   * Render a form to update an existing caseentry.
-   * GET caseentries/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
-
-  /**
-   * Update caseentry details.
-   * PUT or PATCH caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async update ({ params, request, response }) {
     const caseId = params.id
     
@@ -189,7 +122,6 @@ class CaseEntryController {
     case_entry.case_latitude = case_latitude
     case_entry.case_description = case_description
 
-    // IF user upload a photo when update case_entry
     if(request.file('case_photo')) {
       const photoFile = request.file('case_photo', {
         types: ['image'],
@@ -213,19 +145,13 @@ class CaseEntryController {
     await case_entry.save()
   }
 
-  /**
-   * Delete a caseentry with id.
-   * DELETE caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async destroy ({ params, response }) {
     try {
       const caseId = params.id
 
-      const case_entry = await CaseEntry.query()
+      let case_entry = await CaseEntry.findByOrFail(caseId)
+
+      case_entry = await CaseEntry.query()
         .where({
             case_id: caseId
         }).first()
@@ -236,9 +162,14 @@ class CaseEntryController {
 
       case_entry.delete()
     } catch (err) {
-      return response
-        .status(err.status)
-        .send(err)      
+        if (err.name === 'ModelNotFoundException') {
+            return response
+            .status(err.status)
+            .send({ message: {
+                error: 'No agenda found'
+            } })
+        }
+        return response.status(err.status)      
     }
   }
 

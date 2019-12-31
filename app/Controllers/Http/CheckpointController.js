@@ -3,7 +3,6 @@ const Checkpoint = use('App/Models/Checkpoint')
 
 class CheckpointController {
     async index ({ response }) {
-        // return Checkpoint.all()
         try {
             const checkpoint = await Checkpoint.query()
                 .with('agenda')
@@ -87,12 +86,21 @@ class CheckpointController {
         try {
             const checkpointId = params.id
 
-            const checkpoint = await Checkpoint.query()
+            let chechkpoint = await Checkpoint.findByOrFail(checkpointId)
+
+            checkpoint = await Checkpoint.query()
                 .where({
                     checkpoint_id: checkpointId
                 }).delete()
         } catch (err) {
-            
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No chechkpoint found'
+                } })
+            }
+            return response.status(err.status)   
         }
     }
 

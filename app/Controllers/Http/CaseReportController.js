@@ -4,23 +4,8 @@ const fs = use('fs');
 const Helpers = use('Helpers')
 const CaseReport = use('App/Models/CaseReport')
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with caseentries
- */
 class CaseReportController {
-  /**
-   * Show a list of all caseentries.
-   * GET caseentries
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+  
   async index ({ response }) {
     try {
       const case_report = await CaseReport.query()
@@ -35,26 +20,6 @@ class CaseReportController {
     }
   }
 
-  /**
-   * Render a form to be used for creating a new caseentry.
-   * GET caseentries/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({ request, response, view }) {
-  }
-
-  /**
-   * Create/save a new caseentry.
-   * POST caseentries
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store ({ request, response }) {
     try {
       const case_report = new CaseReport()
@@ -83,7 +48,6 @@ class CaseReportController {
 
       await case_report.save()
 
-      // IF user upload a photo when create case_report
       if(request.file('case_report_photo')) {
         const photoFile = request.file('case_report_photo', {
           types: ['image'],
@@ -113,15 +77,6 @@ class CaseReportController {
     }
   }
 
-  /**
-   * Display a single caseentry.
-   * GET caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async show ({ params, response }) {
     try {
       const case_reportId = params.id
@@ -153,15 +108,6 @@ class CaseReportController {
     }
   }
 
-/**
-   * Display a user casereport.
-   * GET caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async showUserReport ({ params, response }) {
     try {
       const userId = params.id
@@ -181,26 +127,6 @@ class CaseReportController {
     }
   }
 
-    /**
-   * Render a form to update an existing caseentry.
-   * GET caseentries/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
-
-  /**
-   * Update caseentry details.
-   * PUT or PATCH caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async update ({ params, request, response }) {
     const case_reportId = params.id
 
@@ -226,7 +152,6 @@ class CaseReportController {
         case_report.case_description = case_report_description
         case_report.case_report_status = case_report_status
 
-        // IF user upload a photo when create case_report
         if(request.file('case_report_photo')) {
           const photoFile = request.file('case_report_photo', {
             types: ['image'],
@@ -249,19 +174,13 @@ class CaseReportController {
         await case_report.save()
   }
 
-  /**
-   * Delete a caseentry with id.
-   * DELETE caseentries/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async destroy ({ params }) {
     try {
       const case_reportId = params.id
 
-      const case_report = await CaseReport.query()
+      let case_report = await CaseReport.findByOrFail(case_reportId)
+
+      case_report = await CaseReport.query()
           .where({
               case_report_id: case_reportId
           }).first()
@@ -270,11 +189,16 @@ class CaseReportController {
             fs.unlinkSync(Helpers.publicPath(case_report.case_report_photo))
           }
     
-          case_report.delete()
+     case_report.delete()
     } catch (err) {
-        return response
+      if (err.name === 'ModelNotFoundException') {
+          return response
           .status(err.status)
-          .send(err)
+          .send({ message: {
+              error: 'Case Report Not Found'
+          } })
+      }
+      return response.status(err.status)
     }
   }
 

@@ -5,7 +5,6 @@ const Member = use('App/Models/Member')
 
 class MemberController {
     async index({ response }) {
-        // return Member.all()
         try {
             const member = await Member.query()
                 .with('user')
@@ -46,9 +45,6 @@ class MemberController {
         try {
             const teamId = params.id
 
-            // let member = await Member
-            //     .findOrFail(params.id)
-
             const member = await Member.query()
                 .where({
                     team_id: teamId
@@ -85,10 +81,9 @@ class MemberController {
         try {
             const userId = params.id
 
-            // let member = await Member
-            //     .findOrFail(params.id)
+            let member = await Member.findOrFail(userId)
 
-            const member = await Member.query()
+            member = await Member.query()
                 .where({
                     user_id: userId
                 })
@@ -124,12 +119,21 @@ class MemberController {
         try {
             const teamId = params.id
 
-            const member = await Member.query()
+            let member = await Member.findByOrFail(team_id)
+
+            member = await Member.query()
                 .where({
                     team_id: teamId
                 }).delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No team found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 
@@ -137,12 +141,21 @@ class MemberController {
         try {
             const userId = params.id
 
-            const member = await Member.query()
+            let member = await Member.findByOrFail(userId)
+
+            member = await Member.query()
                 .where({
                     user_id: userId
                 }).delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No user found'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 
@@ -151,7 +164,9 @@ class MemberController {
             const userId = params.user_id
             const teamId = params.team_id
 
-            const member = await Member.query()
+            let member = await Member.findByOrFail(userId, team_id)
+
+            member = await Member.query()
                 .where({
                     user_id: userId
                 }).andWhere({
@@ -159,7 +174,14 @@ class MemberController {
                 })
                 .delete()
         } catch (err) {
-
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No user found in team'
+                } })
+            }
+            return response.status(err.status)
         }
     }
 }
