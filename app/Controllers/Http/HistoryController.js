@@ -31,6 +31,7 @@ class HistoryController {
       const history = await History.query()
         .whereIn('history_id', subQuery)
         .andWhere('history_datetime', '>', moment().subtract(1, 'days').startOf('day'))
+        .andWhere('team_id', '!=', null)
         .with('user')
         .fetch()
 
