@@ -64,7 +64,7 @@ class CategoryController {
     try {
       const categoryId = params.id
 
-      let category = await Category.findByOrFail(categoryId)
+      let category = await Category.findOrFail(categoryId)
 
       category = await Category.query()
           .where({

@@ -62,7 +62,7 @@ class RoleController {
         try {
             const roleId = params.id
 
-            let role = await Role.findByOrFail(roleId)
+            let role = await Role.findOrFail(roleId)
 
             role = await Role.query()
                 .where({

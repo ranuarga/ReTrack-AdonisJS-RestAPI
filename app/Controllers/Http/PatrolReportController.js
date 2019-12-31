@@ -173,7 +173,7 @@ class PatrolReportController {
         try {
             const patrol_reportId = params.id
 
-            let patrol_report = await PatrolReport.findByOrFail(patrol_reportId)
+            let patrol_report = await PatrolReport.findOrFail(patrol_reportId)
 
             patrol_report = await PatrolReport.query()
                 .where({
@@ -182,9 +182,9 @@ class PatrolReportController {
 
             if(patrol_report.patrol_photo && fs.existsSync(Helpers.publicPath(patrol_report.patrol_photo))) {
                 fs.unlinkSync(Helpers.publicPath(patrol_report.patrol_photo))
-                }
+            }
         
-                patrol_report.delete()   
+            patrol_report.delete()   
         } catch (err) {
             if (err.name === 'ModelNotFoundException') {
                 return response

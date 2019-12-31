@@ -87,7 +87,9 @@ class LocationController {
     try {
       const locationId = params.id
 
-      const location = await Location.query()
+      let location = await Location.findOrFail(locationId)
+
+      location = await Location.query()
         .where({
           location_id: locationId
         }).delete()

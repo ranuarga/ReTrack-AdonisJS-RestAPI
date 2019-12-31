@@ -149,7 +149,7 @@ class CaseEntryController {
     try {
       const caseId = params.id
 
-      let case_entry = await CaseEntry.findByOrFail(caseId)
+      let case_entry = await CaseEntry.findOrFail(caseId)
 
       case_entry = await CaseEntry.query()
         .where({

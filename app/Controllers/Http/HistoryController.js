@@ -163,7 +163,7 @@ class HistoryController {
     try {
       const historyId = params.id
 
-      let history = await History.findByOrFail(historyId)
+      let history = await History.findOrFail(historyId)
 
       history = await History.query()
         .where({

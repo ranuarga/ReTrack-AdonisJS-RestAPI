@@ -121,7 +121,7 @@ class TeamController {
         try {
             const teamId = params.id
 
-            let team = await team.findByOrFail(teamId)
+            let team = await team.findOrFail(teamId)
 
             team = await Team.query()
                 .where({

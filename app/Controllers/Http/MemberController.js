@@ -119,7 +119,7 @@ class MemberController {
         try {
             const teamId = params.id
 
-            let member = await Member.findByOrFail(team_id)
+            let member = await Member.findByOrFail('team_id', teamId)
 
             member = await Member.query()
                 .where({
@@ -141,7 +141,7 @@ class MemberController {
         try {
             const userId = params.id
 
-            let member = await Member.findByOrFail(userId)
+            let member = await Member.findByOrFail('user_id', userId)
 
             member = await Member.query()
                 .where({
@@ -164,9 +164,7 @@ class MemberController {
             const userId = params.user_id
             const teamId = params.team_id
 
-            let member = await Member.findByOrFail(userId, team_id)
-
-            member = await Member.query()
+            let member = await Member.query()
                 .where({
                     user_id: userId
                 }).andWhere({
@@ -174,13 +172,6 @@ class MemberController {
                 })
                 .delete()
         } catch (err) {
-            if (err.name === 'ModelNotFoundException') {
-                return response
-                .status(err.status)
-                .send({ message: {
-                    error: 'No user found in team'
-                } })
-            }
             return response.status(err.status)
         }
     }

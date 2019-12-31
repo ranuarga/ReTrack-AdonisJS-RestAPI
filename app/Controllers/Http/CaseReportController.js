@@ -178,7 +178,7 @@ class CaseReportController {
     try {
       const case_reportId = params.id
 
-      let case_report = await CaseReport.findByOrFail(case_reportId)
+      let case_report = await CaseReport.findOrFail(case_reportId)
 
       case_report = await CaseReport.query()
           .where({
@@ -189,7 +189,7 @@ class CaseReportController {
             fs.unlinkSync(Helpers.publicPath(case_report.case_report_photo))
           }
     
-     case_report.delete()
+    case_report.delete()
     } catch (err) {
       if (err.name === 'ModelNotFoundException') {
           return response

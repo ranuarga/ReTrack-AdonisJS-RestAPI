@@ -110,7 +110,7 @@ class TaskTeamController {
         try {
             const teamId = params.id
 
-            let task_team = await TaskTeam.findOrFail(teamId)
+            let task_team = await TaskTeam.findByOrFail('team_id', teamId)
 
             const task_team = await TaskTeam.query()
                 .where({
@@ -132,7 +132,7 @@ class TaskTeamController {
         try {
             const caseId = params.id
 
-            let task_team = await TaskTeam.findOrFail(caseId)
+            let task_team = await TaskTeam.findByOrFail('case_id', caseId)
 
             task_team = await TaskTeam.query()
                 .where({
@@ -155,8 +155,6 @@ class TaskTeamController {
             const caseId = params.case_id
             const teamId = params.team_id
 
-            let task_team = await TaskTeam.findOrFail(caseId, teamId)
-
             task_team = await TaskTeam.query()
                 .where({
                     case_id: caseId
@@ -165,13 +163,6 @@ class TaskTeamController {
                 })
                 .delete()
         } catch (err) {
-            if (err.name === 'ModelNotFoundException') {
-                return response
-                .status(err.status)
-                .send({ message: {
-                    error: 'No task team found'
-                } })
-            }
             return response.status(err.status)
         }
     }

@@ -158,7 +158,7 @@ class UserController {
         try {
             const userId = params.id
 
-            let user = await User.findByOrFail(userId)
+            let user = await User.findOrFail(userId)
 
             user = await User.query()
                 .where({

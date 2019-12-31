@@ -94,7 +94,7 @@ class CarController {
         try {
             const carId = params.id
 
-            let car = await Car.findByOrFail(carId)
+            let car = await Car.findOrFail(carId)
 
             car = await Car.query()
                 .where({
