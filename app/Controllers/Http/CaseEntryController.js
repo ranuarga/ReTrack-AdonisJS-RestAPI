@@ -2,6 +2,7 @@
 
 const fs = use('fs');
 const Helpers = use('Helpers')
+const Database = use('Database')
 const CaseEntry = use('App/Models/CaseEntry')
 
 class CaseEntryController {
@@ -10,6 +11,21 @@ class CaseEntryController {
       const case_entry = await CaseEntry.query()
           .with('category')
           .fetch()
+
+      return case_entry
+    } catch (err) {
+      return response.status(err.status)
+    }
+  }
+
+  async countCaseCategory ({ response }) {
+    try {
+      const case_entry = await Database
+        .select('categories.category_name')
+        .count('case_id')
+        .from('case_entries')
+        .innerJoin('categories', 'case_entries.category_id', 'categories.category_id')  
+        .groupBy('categories.category_id')  
 
       return case_entry
     } catch (err) {

@@ -48,6 +48,7 @@ Route
     // Routing for case entry
     Route.get('case-entry', 'CaseEntryController.index')
     Route.get('case-entry/:id', 'CaseEntryController.show')
+    Route.get('case-entry/count/category', 'CaseEntryController.countCaseCategory')
     Route.get('case-entry/search', 'CaseEntryController.search')
     Route.get('case-entry/pagination', 'CaseEntryController.pagination')
     Route.post('case-entry', 'CaseEntryController.store')
@@ -149,6 +150,7 @@ Route
     Route.get('patrol-report/:id', 'PatrolReportController.show')
     Route.get('patrol-report/user/:id', 'PatrolReportController.showUserReport')
     Route.get('patrol-report/search', 'PatrolReportController.search')
+    Route.get('patrol-report/count/status', 'PatrolReportController.countPatrolStatus')
     Route.get('patrol-report/pagination', 'PatrolReportController.pagination')
     Route.post('patrol-report', 'PatrolReportController.store')
     Route.put('patrol-report/:id', 'PatrolReportController.update')

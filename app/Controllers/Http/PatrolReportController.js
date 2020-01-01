@@ -2,6 +2,7 @@
 
 const fs = use('fs');
 const Helpers = use('Helpers')
+const Database = use('Database')
 const PatrolReport = use('App/Models/PatrolReport')
 
 class PatrolReportController {
@@ -12,6 +13,20 @@ class PatrolReportController {
                 .with('agenda')
                 .fetch()
 
+            return patrol_report
+        } catch (err) {
+            return response.status(err.status)
+        }
+    }
+    
+    async countPatrolStatus ({ response }) {
+        try {
+            const patrol_report = await Database
+                .select('patrol_status')
+                .count('patrol_report_id')
+                .from('patrol_reports')
+                .groupBy('patrol_status')  
+    
             return patrol_report
         } catch (err) {
             return response.status(err.status)
@@ -118,23 +133,23 @@ class PatrolReportController {
 
         if(request.file('patrol_photo')) {
             const photoFile = request.file('patrol_photo', {
-              types: ['image'],
-              size: '5mb'
+                types: ['image'],
+                size: '5mb'
             })
             
             let namePhotoPatrolReport = patrol_report.patrol_report_id + '.jpg'
     
             await photoFile.move(Helpers.publicPath('uploads/patrol_report'), {
-              name: namePhotoPatrolReport,
-              overwrite: true
+                name: namePhotoPatrolReport,
+                overwrite: true
             })
-      
+
             if(!photoFile.moved()){
                 return photoFile.error()
             }
-      
+
             patrol_report.patrol_photo = '/uploads/patrol_report/' + namePhotoPatrolReport
-          }
+        }
 
         await patrol_report.save()
     }
