@@ -10,6 +10,7 @@ class CaseEntryController {
     try {
       const case_entry = await CaseEntry.query()
           .with('category')
+          .orderBy('case_id', 'desc')
           .fetch()
 
       return case_entry

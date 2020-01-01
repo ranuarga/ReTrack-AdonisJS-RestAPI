@@ -11,6 +11,7 @@ class PatrolReportController {
             const patrol_report = await PatrolReport.query()
                 .with('user')
                 .with('agenda')
+                .orderBy('patrol_report_id', 'desc')
                 .fetch()
 
             return patrol_report

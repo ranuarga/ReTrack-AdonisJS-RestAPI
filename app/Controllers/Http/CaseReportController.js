@@ -12,6 +12,7 @@ class CaseReportController {
           .with('user')
           .with('case_entry')
           .with('case_entry.category')
+          .orderBy('case_report_id', 'desc')
           .fetch()
 
       return case_report
