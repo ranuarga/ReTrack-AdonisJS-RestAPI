@@ -131,6 +131,7 @@ class UserController {
 
     async show({ params, response}) {
         try {
+            
             const userId = params.id
 
             let user = await User.findOrFail(params.id)
@@ -152,7 +153,32 @@ class UserController {
             }
             return response.status(err.status)
         }
-    }    
+    }
+    
+    async showByRole({ params, response}) {
+        try {
+            
+            const roleId = params.id
+
+            const user = await User.query()
+                .where({
+                    role_id: roleId
+                }).with('role')
+                .fetch()
+
+            return user
+        }catch( err){
+            if (err.name === 'ModelNotFoundException') {
+                return response
+                .status(err.status)
+                .send({ message: {
+                    error: 'No user found'
+                } })
+            }
+            return response.status(err.status)
+        }
+    }
+
 
     async destroy ({ params }) {
         try {
