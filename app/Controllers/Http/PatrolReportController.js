@@ -25,6 +25,7 @@ class PatrolReportController {
                 .select('patrol_status')
                 .count('patrol_report_id')
                 .from('patrol_reports')
+                .andWhereNot('patrol_status', null)
                 .groupBy('patrol_status')  
     
             return patrol_report
